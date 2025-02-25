@@ -1,6 +1,6 @@
 import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
+import { Button } from "@/ui/button"
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -63,7 +63,7 @@ export default function Home() {
             Read our docs
           </a>
         </div>
-        <Button appName="web" className={styles.secondary}>
+        <Button className="text-3xl border rounded-lg p-2 text-xm">
           Open alert
         </Button>
       </main>
