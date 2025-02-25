@@ -18,7 +18,7 @@ importers:
         specifier: 5.7.3
         version: 5.7.3
 
-  apps/docs:
+  apps/event:
     dependencies:
       '@repo/ui':
         specifier: workspace:*
@@ -48,14 +48,23 @@ importers:
       '@types/react-dom':
         specifier: 19.0.3
         version: 19.0.3(@types/react@19.0.8)
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.4.20(postcss@8.5.3)
       eslint:
         specifier: ^9.21.0
         version: 9.21.0
+      postcss:
+        specifier: ^8.5.3
+        version: 8.5.3
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.17
       typescript:
         specifier: 5.7.3
         version: 5.7.3
 
-  apps/web:
+  apps/recruit:
     dependencies:
       '@repo/ui':
         specifier: workspace:*
