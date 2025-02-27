@@ -4,8 +4,14 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
+      "@repo/ui/components/*": [
+        "./src/components/*"
+      ],
+      "@repo/ui/lib/*": [
+        "./src/lib/*"
+      ],
+      "@repo/ui/hooks/*": [
+        "./src/hooks/*"
       ]
     }
   },

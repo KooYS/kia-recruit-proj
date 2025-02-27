@@ -8,13 +8,7 @@
     ],
     "paths": {
       "@/*": [
-        "./*"
-      ],
-      "@/ui/src/*": [
-        "../../packages/ui/src/*"
-      ],
-      "@/ui/*": [
-        "../../packages/ui/src/components/ui/*"
+        "./src/*"
       ],
     }
   },
@@ -22,8 +16,9 @@
     "**/*.ts",
     "**/*.tsx",
     "next-env.d.ts",
-    "next.config.js",
-    ".next/types/**/*.ts"
+    "next.config.cjs",
+    ".next/types/**/*.ts",
+    "postcss.config.mjs"
   ],
   "exclude": [
     "node_modules"

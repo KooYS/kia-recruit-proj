@@ -1,2 +1,8 @@
-import tailwindConfig from "@repo/tailwind-config/postcss.config";
-export default tailwindConfig;
+/** @type {import('postcss-load-config').Config} */
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;

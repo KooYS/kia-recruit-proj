@@ -1,6 +1,6 @@
 import Image, { type ImageProps } from "next/image";
 import styles from "./page.module.css";
-import { Button } from "@/ui/button"
+import { Button } from '@repo/ui/components/ui/button';
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -32,8 +32,8 @@ export default function Home() {
           priority
         />
         <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
+          <li className="bg-black/30">
+            Get started by editing <code>apps/docs/app/page.tsx</code>
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
@@ -63,7 +63,7 @@ export default function Home() {
             Read our docs
           </a>
         </div>
-        <Button className="text-3xl border rounded-lg p-2 text-xm">
+        <Button className={'text-3xl p-20 border-4 border-black'}>
           Open alert
         </Button>
       </main>
