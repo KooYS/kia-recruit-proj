@@ -9,18 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "catalog:react",
-    "react-dom": "catalog:react",
+    "react-custom-roulette": "^1.4.1",
+    "@repo/ui": "workspace:*",
     "next": "catalog:nextjs",
-    "@repo/ui": "workspace:*"
+    "react": "catalog:react",
+    "react-dom": "catalog:react"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@types/node": "catalog:",
-    "typescript": "catalog:",
-    "postcss": "catalog:"
+    "postcss": "catalog:",
+    "typescript": "catalog:"
   }
 }

@@ -6,7 +6,7 @@
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
-    "ui:add": "pnpm dlx shadcn@latest add"
+    "ui:add": "pnpm dlx shadcn@canary add"
   },
   "exports": {
     "./globals.css": "./src/globals.css",
@@ -43,7 +43,6 @@
     "autoprefixer": "catalog:",
     "postcss": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:",
-    "@tailwindcss/postcss": "catalog:"
+    "typescript": "catalog:"
   }
 }
