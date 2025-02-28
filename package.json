@@ -12,8 +12,8 @@
     "clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && find . -name '.next' -type d -prune -exec rm -rf '{}' + && rm -f pnpm-lock.json + && pnpm install"
   },
   "devDependencies": {
-    "prettier": "^3.5.0",
-    "turbo": "^2.4.4",
+    "prettier": "catalog:",
+    "turbo": "catalog:",
     "typescript": "catalog:",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*"
@@ -21,9 +21,5 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=20"
-  },
-  "volta": {
-    "node": "22.12.0",
-    "pnpm": "9.12.0"
   }
 }
