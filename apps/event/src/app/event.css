@@ -13,7 +13,47 @@ body {
   justify-content: center;
   align-items: center;
   height: 100%;
+  position: relative;
 }
 .roulette_board > div {
-  rotate: -45deg;
+  /* rotate: -45deg; */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(var(--start-rotation, 0deg));
+  }
+  to {
+    transform: rotate(calc(var(--start-rotation, 0deg) + 360deg));
+  }
+}
+
+@keyframes stopSpin {
+  from {
+    transform: rotate(var(--start-rotation, 0deg));
+  }
+  to {
+    transform: rotate(var(--final-rotation, 0deg));
+  }
+}
+
+.started-spinning {
+  animation:
+    spin var(--start-spin-time)
+      cubic-bezier(0.71, var(--bezier-point, -0.29), 0.96, 0.9) 0s 1 forwards,
+    spin var(--continue-spin-time) linear var(--start-spin-time) 1 forwards,
+    stopSpin var(--stop-spin-time) cubic-bezier(0, 0, 0.35, 1.02)
+      var(--total-spin-time) 1 forwards;
+}
+.started-spinning[data-disable-animation="true"] {
+  animation:
+    spin var(--start-spin-time)
+      cubic-bezier(0.71, var(--bezier-point, 0), 0.96, 0.9) 0s 1 forwards,
+    spin var(--continue-spin-time) linear var(--start-spin-time) 1 forwards,
+    stopSpin var(--stop-spin-time) cubic-bezier(0, 0, 0.35, 1.02)
+      var(--total-spin-time) 1 forwards;
+}
+
+.disable-initial-anim {
+  --bezier-point: 0;
 }

@@ -1,32 +1,59 @@
 'use client'
 import React from 'react'
-import dynamic from 'next/dynamic';
 import { Button } from '@repo/ui/components/ui/button';
-import { Input } from '@repo/ui/components/ui/input';
-const Wheel = dynamic(() => import('react-custom-roulette').then((mod) => mod.Wheel), { ssr: false, });
-
+import { Wheel } from './_components/RouletteWheel/index';
 
 const data = [
-    { option: '0', style: { backgroundColor: 'green', textColor: 'black' } },
-    { option: '1', style: { backgroundColor: 'white', textColor: 'black' } },
+    { option: '0', style: { backgroundColor: 'white', textColor: 'black' }, weight: 5 },
+    { option: '1', style: { backgroundColor: 'white', textColor: 'black' }, weight: 5 },
+    { option: '2', style: { backgroundColor: 'white', textColor: 'black' }, weight: 90 },
+    { option: '3', style: { backgroundColor: 'white', textColor: 'black' }, weight: 5 },
+    { option: '4', style: { backgroundColor: 'white', textColor: 'black' }, weight: 5 },
+    { option: '5', style: { backgroundColor: 'white', textColor: 'black' }, weight: 5 },
 ]
 
 const RouletteWheel = () => {
 
-    const [mustSpin, setMustSpin] = React.useState(false);
+    const [startSpin, setStartSpin] = React.useState(false);
     const [prizeNumber, setPrizeNumber] = React.useState(0);
 
+    const getWeightedIndex = (weights: number[]): number => {
+        // 암호학적으로 안전한 난수 생성
+        const getSecureRandom = (): number => {
+            const cryptoObj = window.crypto || (window as any).msCrypto;
+            if (cryptoObj && cryptoObj.getRandomValues) {
+                const array = new Uint32Array(1);
+                cryptoObj.getRandomValues(array);
+                return (array[0] || 0) / (0xffffffff + 1);
+            }
+            // 폴백: 암호학적으로 안전하지 않지만, 마지막 수단으로 Math.random() 사용
+            console.warn('Crypto API not available, falling back to Math.random()');
+            return Math.random();
+        };
+
+        const total = weights.reduce((a, b) => a + b, 0);
+        const random = getSecureRandom() * total;
+        let cumulative = 0;
+
+        return weights.findIndex((weight) => {
+            cumulative += weight;
+            return random <= cumulative;
+        });
+    };
+
+
     const handleSpinClick = () => {
-        if (!mustSpin) {
-            const newPrizeNumber = Math.floor(Math.random() * data.length);
+        if (!startSpin) {
+            const newPrizeNumber = getWeightedIndex(data.map((el) => el.weight));
             setPrizeNumber(newPrizeNumber);
-            setMustSpin(true);
+            setStartSpin(true);
         }
     }
 
 
     const onFinished = (winner: string) => {
         alert(`You won ${winner}`)
+        setStartSpin(false)
     }
 
 
@@ -37,10 +64,11 @@ const RouletteWheel = () => {
                     disableInitialAnimation
                     spinDuration={0.5}
                     fontWeight={300}
-                    textDistance={50}
+                    textDistance={60}
                     radiusLineWidth={1}
+                    fontSize={30}
                     outerBorderWidth={1}
-                    mustStartSpinning={mustSpin}
+                    mustStartSpinning={startSpin}
                     prizeNumber={prizeNumber}
                     data={data}
                     backgroundColors={['#3e3e3e', '#df3428']}
@@ -51,7 +79,6 @@ const RouletteWheel = () => {
             <Button onClick={handleSpinClick} className='mt-4'>
                 Spin
             </Button>
-            <Input className='w-[200px]' />
         </div>
     </div>
 }

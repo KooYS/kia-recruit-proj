@@ -18,7 +18,8 @@
     "next-env.d.ts",
     "next.config.cjs",
     ".next/types/**/*.ts",
-    "postcss.config.mjs"
+    "postcss.config.mjs",
+    "src/app/_components/common/images.txs"
   ],
   "exclude": [
     "node_modules"
