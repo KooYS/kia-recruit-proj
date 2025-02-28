@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { Button } from '@repo/ui/components/ui/button';
-import { Wheel } from './_components/RouletteWheel/index';
+import { Wheel } from './_components/Roulette/RouletteWheel/index';
 
 const data = [
     { option: '0', style: { backgroundColor: 'white', textColor: 'black' }, weight: 5 },

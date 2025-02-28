@@ -1,7 +1,7 @@
 import React, { createRef, RefObject, useEffect } from 'react';
 import { WheelCanvasStyle } from './styles';
 import { WheelData } from '../RouletteWheel/types';
-import { clamp, getQuantity } from '../../_utils/roulette_wheel';
+import { clamp, getQuantity } from '../../../_utils/roulette_wheel';
 
 interface WheelCanvasProps extends DrawWheelProps {
   width: string;

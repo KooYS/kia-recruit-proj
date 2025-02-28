@@ -4,7 +4,7 @@ import {
   getQuantity,
   getRotationDegrees,
   makeClassKey,
-} from '../../_utils/roulette_wheel';
+} from '../../../_utils/roulette_wheel';
 import {
   RotationContainer,
   RouletteContainer,
@@ -27,7 +27,7 @@ import {
   DEFAULT_TEXT_COLORS,
   DEFAULT_TEXT_DISTANCE,
   DISABLE_INITIAL_ANIMATION,
-} from '../../_utils/roulette_string';
+} from '../../../_utils/roulette_string';
 import { ImagePropsLocal, PointerProps, WheelData } from './types';
 import WheelCanvas from '../RouletteWheelCanvas';
 
