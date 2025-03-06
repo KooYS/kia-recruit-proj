@@ -7,9 +7,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -21,7 +19,5 @@
     "postcss.config.mjs",
     "src/app/_components/common/images.txs"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

@@ -4,6 +4,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "event": "turbo run dev --filter=event",
     "lint": "turbo run lint",
     "prune": "turbo prune  --scope=recruit --docker",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -12,14 +13,17 @@
     "clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && find . -name '.next' -type d -prune -exec rm -rf '{}' + && rm -f pnpm-lock.json + && pnpm install"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "prettier": "catalog:",
     "turbo": "catalog:",
-    "typescript": "catalog:",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*"
+    "typescript": "catalog:"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "nuqs": "^2.4.0"
   }
 }

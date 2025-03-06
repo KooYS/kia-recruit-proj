@@ -1,7 +1,5 @@
-import RouletteWheel from "./RouletteWheel";
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return (
-    <RouletteWheel />
-  );
+  redirect('1');
 }

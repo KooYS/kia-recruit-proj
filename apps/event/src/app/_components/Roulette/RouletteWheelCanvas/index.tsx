@@ -194,13 +194,23 @@ const drawWheel = (
         ctx.rotate(contentRotationAngle);
 
         const text = data[i]?.option;
-        ctx.font = `${style?.fontStyle || fontStyle} ${style?.fontWeight || fontWeight
-          } ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+        ctx.font = `${style?.fontStyle || fontStyle} ${
+          style?.fontWeight || fontWeight
+        } ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
         ctx.fillStyle = (style && style.textColor) as string;
         ctx.fillText(
           text || '',
           -ctx.measureText(text || '').width / 2,
           fontSize / 2.7
+        );
+
+        const textPrize = data[i]?.description;
+        ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+        ctx.fillStyle = (style && style.textColor) as string;
+        ctx.fillText(
+          textPrize || '',
+          -ctx.measureText(textPrize || '').width / 2,
+          fontSize * 2
         );
       }
 
@@ -252,7 +262,14 @@ const WheelCanvas = ({
     drawWheel(canvasRef, data, drawWheelProps);
   }, [canvasRef, data, drawWheelProps, rouletteUpdater]);
 
-  return <canvas style={WheelCanvasStyle} ref={canvasRef} width={width} height={height} />;
+  return (
+    <canvas
+      style={WheelCanvasStyle}
+      ref={canvasRef}
+      width={width}
+      height={height}
+    />
+  );
 };
 
 export default WheelCanvas;
