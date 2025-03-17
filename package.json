@@ -10,6 +10,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "ui:add": "pnpm --filter ui ui:add",
+    "db:gen": "pnpm --filter db db:generate",
+    "db:push": "pnpm --filter db db:push",
     "clean": "rm -rf .turbo && find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && find . -name '.next' -type d -prune -exec rm -rf '{}' + && rm -f pnpm-lock.json + && pnpm install"
   },
   "devDependencies": {
@@ -24,6 +26,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "nuqs": "^2.4.0"
+    "nuqs": "^2.4.0",
+    "usehooks-ts": "^3.1.1"
   }
 }
