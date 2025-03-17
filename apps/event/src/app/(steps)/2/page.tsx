@@ -4,7 +4,7 @@ import { prisma } from '@repo/db';
 
 const Page = async () => {
   const user = await prisma.user.findFirst();
-  console.log(user);
+  console.log('user', user);
 
   return (
     <Suspense>
