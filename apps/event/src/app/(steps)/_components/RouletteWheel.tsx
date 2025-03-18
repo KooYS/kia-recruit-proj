@@ -13,11 +13,13 @@ export interface RouletteData {
 
 interface RouletteWheelProps {
   prizes: RouletteData[];
+  requiredStep: (prize: string, prizeIndex: number) => Promise<boolean>;
   onFinished: (prize: string) => void;
 }
 const RouletteWheel: React.FC<RouletteWheelProps> = ({
   prizes,
   onFinished,
+  requiredStep,
 }) => {
   const [data, setData] = React.useState<RouletteData[]>(prizes);
 
@@ -53,15 +55,20 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
     });
   };
 
-  const handleSpinClick = () => {
+  const handleSpinClick = async () => {
     if (!startSpin) {
       const newPrizeNumber = getWeightedIndex(data);
       if (newPrizeNumber === -1) {
         alert('모든 상품이 소진되었습니다.');
         return;
       }
-      setPrizeNumber(newPrizeNumber);
-      setStartSpin(true);
+      if (
+        requiredStep &&
+        (await requiredStep(data[newPrizeNumber]?.option || '', newPrizeNumber))
+      ) {
+        setPrizeNumber(newPrizeNumber);
+        setStartSpin(true);
+      }
     }
   };
 

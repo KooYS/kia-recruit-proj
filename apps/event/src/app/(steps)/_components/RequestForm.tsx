@@ -12,12 +12,23 @@ import {
   FormLabel,
   FormMessage,
 } from '@repo/ui/components/ui/form';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@repo/ui/components/ui/dialog';
+
 import { Input } from '@repo/ui/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { parseAsString, useQueryStates } from 'nuqs';
 import { useQueryState } from 'nuqs';
 import React, { Suspense } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
+import { _Response, Fetch } from '@/app/_utils/api';
 
 const FormSchema = z.object({
   university: z.string().min(2, {
@@ -51,8 +62,9 @@ export function RequestForm() {
     phone: '',
   };
   const [isIn, setIsIn] = useLocalStorage('isIn', false);
+  const [_, setUniversity] = useLocalStorage('university', university);
   const [user, setUser, rmUser] = useLocalStorage('user', defaultValues);
-
+  const [popupOpen, setPopupOpen] = React.useState(false);
   const { push } = useRouter();
   const form = useForm<FormType>({
     resolver: zodResolver(FormSchema),
@@ -60,22 +72,74 @@ export function RequestForm() {
   });
 
   async function onSubmit(data: FormType) {
-    console.log(data);
+    const isAvail = await Fetch<_Response<{ message: string }>>(
+      `/api/user?university=${data.university}&major=${data.major}&username=${data.username}&phone=${data.phone}`,
+      {}
+    );
+    if (isAvail.success) {
+      console.log(form.getValues());
+      setPopupOpen(true);
+    } else {
+      alert(isAvail.body.message);
+    }
+  }
+
+  const onNext = () => {
+    const data = form.getValues();
     setIsIn(true);
     setUser(data);
     push(
       `1/submit?university=${data.university}&major=${data.major}&username=${data.username}&phone=${data.phone}`
     );
-  }
-
+  };
   React.useEffect(() => {
     console.log(university);
     form.setValue('university', university || '');
+    setUniversity(university || '');
   }, [university]);
   return (
-    <div>
+    <>
       {hasMounted && (
         <Suspense>
+          <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
+            <DialogContent
+              onInteractOutside={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <DialogHeader>
+                <DialogTitle>안내</DialogTitle>
+                <DialogDescription asChild>
+                  <div>
+                    <p>안녕하세요! {form.getValues()?.username}님</p>
+                    <div className="my-3 font-bold">
+                      <p>학교 - {form.getValues()?.university}</p>
+                      <p>학과 - {form.getValues()?.major}</p>
+                      <p>연락처 - {form.getValues()?.phone}</p>
+                    </div>
+                    <p>
+                      입력하신 정보가 맞는지 다시 한 번 확인해주시기 바랍니다.
+                    </p>
+                    <p className="text-red-500 font-semibold mt-2">
+                      중간에 취소하거나 창을 닫게 되면 수령하기 어려우니
+                      참고해주시면 감사하겠습니다.
+                    </p>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex gap-2">
+                <Button
+                  className="flex-1"
+                  variant={'secondary'}
+                  onClick={() => setPopupOpen(false)}
+                >
+                  취소
+                </Button>
+                <Button className="flex-1">다음</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+
           {isIn ? (
             <div className="text-center font-semibold">
               {user.username}님 이미 참여하였습니다.
@@ -169,6 +233,6 @@ export function RequestForm() {
           )}
         </Suspense>
       )}
-    </div>
+    </>
   );
 }

@@ -1,5 +1,5 @@
+import { _Response, Fetch } from '@/app/_utils/api';
 import { redirect } from 'next/navigation';
-import { prisma } from '@repo/db';
 import { createLoader, parseAsString, type SearchParams } from 'nuqs/server';
 
 export const user = {
@@ -20,19 +20,16 @@ const Page = async ({ searchParams }: PageProps) => {
   if (!university || !major || !username || !phone) {
     throw new Error('All fields must be provided and non-null');
   }
-  try {
-    const user = await prisma.user.create({
-      data: { university, major, username, phone },
-    });
-
-    console.log(user);
-    return redirect(
-      `2?u=${encodeURIComponent(user.university)}&m=${encodeURIComponent(user.major)}&n=${encodeURIComponent(user.username)}&p=${encodeURIComponent(user.phone)}`
-    );
-  } catch (error) {
-    console.error('Error creating user:', error);
-    // redirect(`1${university ? `?u=${encodeURI(university)}` : ''}`);
-  }
+  const data = await Fetch<
+    _Response<{
+      message: string;
+      redirect: string;
+    }>
+  >('/api/user', {
+    method: 'POST',
+    body: JSON.stringify({ university, major, username, phone }),
+  });
+  return redirect(data.body.redirect);
 };
 
 export default Page;

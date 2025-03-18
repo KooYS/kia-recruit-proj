@@ -4,4 +4,17 @@ model User {
   major       String
   username    String
   phone       String @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  prize       Prize?
+}
+
+model Prize {
+  id          Int     @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  prizeIndex  Int
+  prizeName   String
+  user        User @relation(fields: [userId], references: [id])
+  userId      Int @unique
 }
