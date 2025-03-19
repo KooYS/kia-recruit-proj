@@ -2,7 +2,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "passThroughEnv": ["DATABASE_URL"]
+      "passThroughEnv": ["DATABASE_URL", "NEXT_PUBLIC_API_URL"]
     }
   }
 }
