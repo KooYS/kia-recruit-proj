@@ -23,6 +23,7 @@ const Page = async ({ searchParams }: PageProps) => {
   if (!u || !m || !n || !p) {
     return <div>URL 접근이 잘못되었습니다. 다시 처음 QR 스캔을 해주세요.</div>;
   }
+
   const user = await prisma.user.findFirst({
     relationLoadStrategy: 'join',
     include: {
