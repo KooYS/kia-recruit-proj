@@ -2,7 +2,7 @@ import { _Response, Fetch } from '@/app/_utils/api';
 import { redirect } from 'next/navigation';
 import { createLoader, parseAsString, type SearchParams } from 'nuqs/server';
 
-export const user = {
+const user = {
   university: parseAsString,
   major: parseAsString,
   username: parseAsString,

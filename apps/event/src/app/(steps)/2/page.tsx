@@ -2,16 +2,16 @@ import React, { Suspense } from 'react';
 import Step2Container from '../_containers/Step2Container';
 import { prisma } from '@repo/db';
 import { parseAsString, createLoader } from 'nuqs/server';
+import type { SearchParams } from 'nuqs/server';
+import { Fetch } from '@/app/_utils/api';
 
-export const user = {
+const user = {
   u: parseAsString,
   m: parseAsString,
   n: parseAsString,
   p: parseAsString,
 };
 const loadSearchParams = createLoader(user);
-import type { SearchParams } from 'nuqs/server';
-import { Fetch } from '@/app/_utils/api';
 
 type PageProps = {
   searchParams: Promise<SearchParams>;

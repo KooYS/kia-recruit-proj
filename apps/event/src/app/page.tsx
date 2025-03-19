@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { parseAsString, createLoader } from 'nuqs/server';
 
-export const university = {
+const university = {
   u: parseAsString,
 };
 const loadSearchParams = createLoader(university);
