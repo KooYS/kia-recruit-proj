@@ -82,142 +82,448 @@ const drawWheel = (
     ctx.strokeStyle = 'transparent';
     ctx.lineWidth = 0;
 
-    let startAngle = 0;
-    const outsideRadius = canvas.width / 2 - 10;
+    // if (backgroundImage) {
+    const img = new Image();
+    img.src = './board.png';
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      // drawWheelContent(canvas, ctx, data, drawWheelProps);
+      let startAngle = 0;
+      const outsideRadius = canvas.width / 2 - 10;
 
-    const clampedContentDistance = clamp(0, 100, textDistance);
-    const contentRadius = (outsideRadius * clampedContentDistance) / 100;
+      const clampedContentDistance = clamp(0, 100, textDistance);
+      const contentRadius = (outsideRadius * clampedContentDistance) / 100;
 
-    const clampedInsideRadius = clamp(0, 100, innerRadius);
-    const insideRadius = (outsideRadius * clampedInsideRadius) / 100;
+      const clampedInsideRadius = clamp(0, 100, innerRadius);
+      const insideRadius = (outsideRadius * clampedInsideRadius) / 100;
 
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
 
-    for (let i = 0; i < data.length; i++) {
-      const { optionSize, style } = data[i] || {};
+      for (let i = 0; i < data.length; i++) {
+        const { optionSize, style } = data[i] || {};
 
-      const arc =
-        (optionSize && (optionSize * (2 * Math.PI)) / QUANTITY) ||
-        (2 * Math.PI) / QUANTITY;
-      const endAngle = startAngle + arc;
+        const arc =
+          (optionSize && (optionSize * (2 * Math.PI)) / QUANTITY) ||
+          (2 * Math.PI) / QUANTITY;
+        const endAngle = startAngle + arc;
 
-      ctx.fillStyle = (style && style.backgroundColor) as string;
+        ctx.fillStyle = (style && style.backgroundColor) as string;
 
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, outsideRadius, startAngle, endAngle, false);
-      ctx.arc(centerX, centerY, insideRadius, endAngle, startAngle, true);
-      ctx.stroke();
-      ctx.fill();
-      ctx.save();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, outsideRadius, startAngle, endAngle, false);
+        ctx.arc(centerX, centerY, insideRadius, endAngle, startAngle, true);
+        ctx.stroke();
+        // ctx.fill();
+        ctx.save();
 
-      // WHEEL RADIUS LINES
-      ctx.strokeStyle = radiusLineWidth <= 0 ? 'transparent' : radiusLineColor;
-      ctx.lineWidth = radiusLineWidth;
-      drawRadialBorder(
-        ctx,
-        centerX,
-        centerY,
-        insideRadius,
-        outsideRadius,
-        startAngle
-      );
-      if (i === data.length - 1) {
+        // WHEEL RADIUS LINES
+        ctx.strokeStyle =
+          radiusLineWidth <= 0 ? 'transparent' : radiusLineColor;
+        ctx.lineWidth = radiusLineWidth;
         drawRadialBorder(
           ctx,
           centerX,
           centerY,
           insideRadius,
           outsideRadius,
-          endAngle
+          startAngle
         );
-      }
+        if (i === data.length - 1) {
+          drawRadialBorder(
+            ctx,
+            centerX,
+            centerY,
+            insideRadius,
+            outsideRadius,
+            endAngle
+          );
+        }
 
-      // WHEEL OUTER BORDER
-      ctx.strokeStyle =
-        outerBorderWidth <= 0 ? 'transparent' : outerBorderColor;
-      ctx.lineWidth = outerBorderWidth;
-      ctx.beginPath();
-      ctx.arc(
+        // WHEEL OUTER BORDER
+        ctx.strokeStyle =
+          outerBorderWidth <= 0 ? 'transparent' : outerBorderColor;
+        ctx.lineWidth = outerBorderWidth;
+        ctx.beginPath();
+        ctx.arc(
+          centerX,
+          centerY,
+          outsideRadius - ctx.lineWidth / 2,
+          0,
+          2 * Math.PI
+        );
+        ctx.closePath();
+        ctx.stroke();
+
+        // WHEEL INNER BORDER
+        ctx.strokeStyle =
+          innerBorderWidth <= 0 ? 'transparent' : innerBorderColor;
+        ctx.lineWidth = innerBorderWidth;
+        ctx.beginPath();
+        ctx.arc(
+          centerX,
+          centerY,
+          insideRadius + ctx.lineWidth / 2 - 1,
+          0,
+          2 * Math.PI
+        );
+        ctx.closePath();
+        ctx.stroke();
+
+        // CONTENT FILL
+        ctx.translate(
+          centerX + Math.cos(startAngle + arc / 2) * contentRadius,
+          centerY + Math.sin(startAngle + arc / 2) * contentRadius
+        );
+        let contentRotationAngle = startAngle + arc / 2;
+
+        if (data[i]?.image) {
+          // CASE IMAGE
+          contentRotationAngle +=
+            data[i]?.image && !data[i]?.image?.landscape ? Math.PI / 2 : 0;
+          ctx.rotate(contentRotationAngle);
+
+          const img = data[i]?.image?._imageHTML || new Image();
+          ctx.drawImage(
+            img,
+            (img.width + (data[i]?.image?.offsetX || 0)) / -2,
+            -(
+              img.height -
+              (data[i]?.image?.landscape ? 0 : 90) + // offsetY correction for non landscape images
+              (data[i]?.image?.offsetY || 0)
+            ) / 2,
+            img.width,
+            img.height
+          );
+        } else {
+          // CASE TEXT
+          contentRotationAngle += perpendicularText ? Math.PI / 2 : 0;
+          ctx.rotate(contentRotationAngle);
+
+          const text = data[i]?.option;
+          ctx.font = `${style?.fontStyle || fontStyle} ${
+            style?.fontWeight || fontWeight
+          } ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+          ctx.fillStyle = (style && style.textColor) as string;
+          ctx.fillText(
+            text || '',
+            -ctx.measureText(text || '').width / 2,
+            fontSize / 2.7
+          );
+
+          const textPrize = data[i]?.description;
+          ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+          ctx.fillStyle = (style && style.textColor) as string;
+          ctx.fillText(
+            textPrize || '',
+            -ctx.measureText(textPrize || '').width / 2,
+            fontSize * 2
+          );
+        }
+
+        ctx.restore();
+
+        startAngle = endAngle;
+      }
+    };
+    // }
+
+    // let startAngle = 0;
+    // const outsideRadius = canvas.width / 2 - 10;
+
+    // const clampedContentDistance = clamp(0, 100, textDistance);
+    // const contentRadius = (outsideRadius * clampedContentDistance) / 100;
+
+    // const clampedInsideRadius = clamp(0, 100, innerRadius);
+    // const insideRadius = (outsideRadius * clampedInsideRadius) / 100;
+
+    // const centerX = canvas.width / 2;
+    // const centerY = canvas.height / 2;
+
+    // for (let i = 0; i < data.length; i++) {
+    //   const { optionSize, style } = data[i] || {};
+
+    //   const arc =
+    //     (optionSize && (optionSize * (2 * Math.PI)) / QUANTITY) ||
+    //     (2 * Math.PI) / QUANTITY;
+    //   const endAngle = startAngle + arc;
+
+    //   ctx.fillStyle = (style && style.backgroundColor) as string;
+
+    //   ctx.beginPath();
+    //   ctx.arc(centerX, centerY, outsideRadius, startAngle, endAngle, false);
+    //   ctx.arc(centerX, centerY, insideRadius, endAngle, startAngle, true);
+    //   ctx.stroke();
+    //   ctx.fill();
+    //   ctx.save();
+
+    //   // WHEEL RADIUS LINES
+    //   ctx.strokeStyle = radiusLineWidth <= 0 ? 'transparent' : radiusLineColor;
+    //   ctx.lineWidth = radiusLineWidth;
+    //   drawRadialBorder(
+    //     ctx,
+    //     centerX,
+    //     centerY,
+    //     insideRadius,
+    //     outsideRadius,
+    //     startAngle
+    //   );
+    //   if (i === data.length - 1) {
+    //     drawRadialBorder(
+    //       ctx,
+    //       centerX,
+    //       centerY,
+    //       insideRadius,
+    //       outsideRadius,
+    //       endAngle
+    //     );
+    //   }
+
+    //   // WHEEL OUTER BORDER
+    //   ctx.strokeStyle =
+    //     outerBorderWidth <= 0 ? 'transparent' : outerBorderColor;
+    //   ctx.lineWidth = outerBorderWidth;
+    //   ctx.beginPath();
+    //   ctx.arc(
+    //     centerX,
+    //     centerY,
+    //     outsideRadius - ctx.lineWidth / 2,
+    //     0,
+    //     2 * Math.PI
+    //   );
+    //   ctx.closePath();
+    //   ctx.stroke();
+
+    //   // WHEEL INNER BORDER
+    //   ctx.strokeStyle =
+    //     innerBorderWidth <= 0 ? 'transparent' : innerBorderColor;
+    //   ctx.lineWidth = innerBorderWidth;
+    //   ctx.beginPath();
+    //   ctx.arc(
+    //     centerX,
+    //     centerY,
+    //     insideRadius + ctx.lineWidth / 2 - 1,
+    //     0,
+    //     2 * Math.PI
+    //   );
+    //   ctx.closePath();
+    //   ctx.stroke();
+
+    //   // CONTENT FILL
+    //   ctx.translate(
+    //     centerX + Math.cos(startAngle + arc / 2) * contentRadius,
+    //     centerY + Math.sin(startAngle + arc / 2) * contentRadius
+    //   );
+    //   let contentRotationAngle = startAngle + arc / 2;
+
+    //   if (data[i]?.image) {
+    //     // CASE IMAGE
+    //     contentRotationAngle +=
+    //       data[i]?.image && !data[i]?.image?.landscape ? Math.PI / 2 : 0;
+    //     ctx.rotate(contentRotationAngle);
+
+    //     const img = data[i]?.image?._imageHTML || new Image();
+    //     ctx.drawImage(
+    //       img,
+    //       (img.width + (data[i]?.image?.offsetX || 0)) / -2,
+    //       -(
+    //         img.height -
+    //         (data[i]?.image?.landscape ? 0 : 90) + // offsetY correction for non landscape images
+    //         (data[i]?.image?.offsetY || 0)
+    //       ) / 2,
+    //       img.width,
+    //       img.height
+    //     );
+    //   } else {
+    //     // CASE TEXT
+    //     contentRotationAngle += perpendicularText ? Math.PI / 2 : 0;
+    //     ctx.rotate(contentRotationAngle);
+
+    //     const text = data[i]?.option;
+    //     ctx.font = `${style?.fontStyle || fontStyle} ${
+    //       style?.fontWeight || fontWeight
+    //     } ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+    //     ctx.fillStyle = (style && style.textColor) as string;
+    //     ctx.fillText(
+    //       text || '',
+    //       -ctx.measureText(text || '').width / 2,
+    //       fontSize / 2.7
+    //     );
+
+    //     const textPrize = data[i]?.description;
+    //     ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+    //     ctx.fillStyle = (style && style.textColor) as string;
+    //     ctx.fillText(
+    //       textPrize || '',
+    //       -ctx.measureText(textPrize || '').width / 2,
+    //       fontSize * 2
+    //     );
+    //   }
+
+    //   ctx.restore();
+
+    //   startAngle = endAngle;
+    // }
+  }
+};
+
+const drawWheelContent = (
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  data: WheelData[],
+  drawWheelProps: DrawWheelProps
+) => {
+  let {
+    outerBorderColor,
+    outerBorderWidth,
+    innerRadius,
+    innerBorderColor,
+    innerBorderWidth,
+    radiusLineColor,
+    radiusLineWidth,
+    fontWeight,
+    fontSize,
+    fontStyle,
+    perpendicularText,
+    prizeMap,
+    textDistance,
+  } = drawWheelProps;
+
+  const QUANTITY = getQuantity(prizeMap);
+
+  let startAngle = 0;
+  const outsideRadius = canvas.width / 2 - 10;
+
+  const clampedContentDistance = clamp(0, 100, textDistance);
+  const contentRadius = (outsideRadius * clampedContentDistance) / 100;
+
+  const clampedInsideRadius = clamp(0, 100, innerRadius);
+  const insideRadius = (outsideRadius * clampedInsideRadius) / 100;
+
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  for (let i = 0; i < data.length; i++) {
+    const { optionSize, style } = data[i] || {};
+
+    const arc =
+      (optionSize && (optionSize * (2 * Math.PI)) / QUANTITY) ||
+      (2 * Math.PI) / QUANTITY;
+    const endAngle = startAngle + arc;
+
+    ctx.fillStyle = (style && style.backgroundColor) as string;
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, outsideRadius, startAngle, endAngle, false);
+    ctx.arc(centerX, centerY, insideRadius, endAngle, startAngle, true);
+    ctx.stroke();
+    ctx.fill();
+    ctx.save();
+
+    // WHEEL RADIUS LINES
+    ctx.strokeStyle = radiusLineWidth <= 0 ? 'transparent' : radiusLineColor;
+    ctx.lineWidth = radiusLineWidth;
+    drawRadialBorder(
+      ctx,
+      centerX,
+      centerY,
+      insideRadius,
+      outsideRadius,
+      startAngle
+    );
+    if (i === data.length - 1) {
+      drawRadialBorder(
+        ctx,
         centerX,
         centerY,
-        outsideRadius - ctx.lineWidth / 2,
-        0,
-        2 * Math.PI
+        insideRadius,
+        outsideRadius,
+        endAngle
       );
-      ctx.closePath();
-      ctx.stroke();
-
-      // WHEEL INNER BORDER
-      ctx.strokeStyle =
-        innerBorderWidth <= 0 ? 'transparent' : innerBorderColor;
-      ctx.lineWidth = innerBorderWidth;
-      ctx.beginPath();
-      ctx.arc(
-        centerX,
-        centerY,
-        insideRadius + ctx.lineWidth / 2 - 1,
-        0,
-        2 * Math.PI
-      );
-      ctx.closePath();
-      ctx.stroke();
-
-      // CONTENT FILL
-      ctx.translate(
-        centerX + Math.cos(startAngle + arc / 2) * contentRadius,
-        centerY + Math.sin(startAngle + arc / 2) * contentRadius
-      );
-      let contentRotationAngle = startAngle + arc / 2;
-
-      if (data[i]?.image) {
-        // CASE IMAGE
-        contentRotationAngle +=
-          data[i]?.image && !data[i]?.image?.landscape ? Math.PI / 2 : 0;
-        ctx.rotate(contentRotationAngle);
-
-        const img = data[i]?.image?._imageHTML || new Image();
-        ctx.drawImage(
-          img,
-          (img.width + (data[i]?.image?.offsetX || 0)) / -2,
-          -(
-            img.height -
-            (data[i]?.image?.landscape ? 0 : 90) + // offsetY correction for non landscape images
-            (data[i]?.image?.offsetY || 0)
-          ) / 2,
-          img.width,
-          img.height
-        );
-      } else {
-        // CASE TEXT
-        contentRotationAngle += perpendicularText ? Math.PI / 2 : 0;
-        ctx.rotate(contentRotationAngle);
-
-        const text = data[i]?.option;
-        ctx.font = `${style?.fontStyle || fontStyle} ${
-          style?.fontWeight || fontWeight
-        } ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
-        ctx.fillStyle = (style && style.textColor) as string;
-        ctx.fillText(
-          text || '',
-          -ctx.measureText(text || '').width / 2,
-          fontSize / 2.7
-        );
-
-        const textPrize = data[i]?.description;
-        ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
-        ctx.fillStyle = (style && style.textColor) as string;
-        ctx.fillText(
-          textPrize || '',
-          -ctx.measureText(textPrize || '').width / 2,
-          fontSize * 2
-        );
-      }
-
-      ctx.restore();
-
-      startAngle = endAngle;
     }
+
+    // WHEEL OUTER BORDER
+    ctx.strokeStyle = outerBorderWidth <= 0 ? 'transparent' : outerBorderColor;
+    ctx.lineWidth = outerBorderWidth;
+    ctx.beginPath();
+    ctx.arc(
+      centerX,
+      centerY,
+      outsideRadius - ctx.lineWidth / 2,
+      0,
+      2 * Math.PI
+    );
+    ctx.closePath();
+    ctx.stroke();
+
+    // WHEEL INNER BORDER
+    ctx.strokeStyle = innerBorderWidth <= 0 ? 'transparent' : innerBorderColor;
+    ctx.lineWidth = innerBorderWidth;
+    ctx.beginPath();
+    ctx.arc(
+      centerX,
+      centerY,
+      insideRadius + ctx.lineWidth / 2 - 1,
+      0,
+      2 * Math.PI
+    );
+    ctx.closePath();
+    ctx.stroke();
+
+    // CONTENT FILL
+    ctx.translate(
+      centerX + Math.cos(startAngle + arc / 2) * contentRadius,
+      centerY + Math.sin(startAngle + arc / 2) * contentRadius
+    );
+    let contentRotationAngle = startAngle + arc / 2;
+
+    if (data[i]?.image) {
+      // CASE IMAGE
+      contentRotationAngle +=
+        data[i]?.image && !data[i]?.image?.landscape ? Math.PI / 2 : 0;
+      ctx.rotate(contentRotationAngle);
+
+      const img = data[i]?.image?._imageHTML || new Image();
+      ctx.drawImage(
+        img,
+        (img.width + (data[i]?.image?.offsetX || 0)) / -2,
+        -(
+          img.height -
+          (data[i]?.image?.landscape ? 0 : 90) + // offsetY correction for non landscape images
+          (data[i]?.image?.offsetY || 0)
+        ) / 2,
+        img.width,
+        img.height
+      );
+    } else {
+      // CASE TEXT
+      contentRotationAngle += perpendicularText ? Math.PI / 2 : 0;
+      ctx.rotate(contentRotationAngle);
+
+      const text = data[i]?.option;
+      ctx.font = `${style?.fontStyle || fontStyle} ${
+        style?.fontWeight || fontWeight
+      } ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+      ctx.fillStyle = (style && style.textColor) as string;
+      ctx.fillText(
+        text || '',
+        -ctx.measureText(text || '').width / 2,
+        fontSize / 2.7
+      );
+
+      const textPrize = data[i]?.description;
+      ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+      ctx.fillStyle = (style && style.textColor) as string;
+      ctx.fillText(
+        textPrize || '',
+        -ctx.measureText(textPrize || '').width / 2,
+        fontSize * 2
+      );
+    }
+
+    ctx.restore();
+
+    startAngle = endAngle;
   }
 };
 

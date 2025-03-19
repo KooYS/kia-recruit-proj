@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Wheel } from '../../_components/Roulette/RouletteWheel/index';
+import { ImagePropsLocal } from '@/app/_components/Roulette/RouletteWheel/types';
 
 export interface RouletteData {
   option: string;
@@ -9,6 +10,7 @@ export interface RouletteData {
   style: { backgroundColor: string; textColor: string };
   weight: number;
   limit: number;
+  image?: ImagePropsLocal;
 }
 
 interface RouletteWheelProps {
