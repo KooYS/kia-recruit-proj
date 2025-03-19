@@ -21,20 +21,23 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const count = await prisma.user.count({
+  const isExist = await prisma.prize.findFirst({
+    relationLoadStrategy: 'join',
+    include: {
+      user: true,
+    },
     where: {
-      phone,
-      university,
+      user: { phone },
     },
   });
 
-  if (count > 0) {
+  if (isExist) {
     return Response.json(
       {
         status: 200,
         success: false,
         body: {
-          message: `이미 참여한 사용자입니다.`,
+          message: `이미 ${isExist.user.username}님께서는 ${isExist.prizeName}으로 ${isExist.createdAt.toLocaleString()} 참여하였습니다.`,
         },
       },
       { status: 200 }
@@ -79,7 +82,7 @@ export async function POST(request: NextRequest) {
             success: false,
             body: {
               message: `이미 참여한 사용자입니다. (${phone})`,
-              redirect: `/`,
+              redirect: `/?u=${encodeURIComponent(isExist.university)}`,
               user: isExist,
             },
           },
@@ -122,7 +125,7 @@ export async function POST(request: NextRequest) {
         success: false,
         body: {
           message: JSON.stringify(error),
-          redirect: `/`,
+          redirect: `/?u=${encodeURIComponent(university)}`,
         },
       },
       { status: 403 }

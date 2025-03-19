@@ -40,9 +40,14 @@ const FormSchema = z.object({
   username: z.string().min(2, {
     message: '이름을 입력해주세요.',
   }),
-  phone: z.string().regex(/^\d+$/, {
-    message: '연락처를 -를 제외하고 입력해주세요.',
-  }),
+  phone: z
+    .string()
+    .length(11, {
+      message: '연락처를 010을 포함하여 11자리로 입력해주세요.',
+    })
+    .regex(/^\d+$/, {
+      message: '연락처를 -를 제외하고 입력해주세요.',
+    }),
 });
 
 type FormType = z.infer<typeof FormSchema>;
@@ -62,7 +67,7 @@ export function RequestForm() {
     phone: '',
   };
   const [isIn, setIsIn] = useLocalStorage('isIn', false);
-  const [_, setUniversity] = useLocalStorage('university', university);
+  const [_, setUniversity] = useLocalStorage('u', university);
   const [user, setUser, rmUser] = useLocalStorage('user', defaultValues);
   const [popupOpen, setPopupOpen] = React.useState(false);
   const { push } = useRouter();
@@ -110,9 +115,9 @@ export function RequestForm() {
               <DialogHeader>
                 <DialogTitle>안내</DialogTitle>
                 <DialogDescription asChild>
-                  <div>
+                  <div className="my-5">
                     <p>안녕하세요! {form.getValues()?.username}님</p>
-                    <div className="my-3 font-bold">
+                    <div className="my-3 font-bold space-y-1">
                       <p>학교 - {form.getValues()?.university}</p>
                       <p>학과 - {form.getValues()?.major}</p>
                       <p>연락처 - {form.getValues()?.phone}</p>
@@ -120,7 +125,7 @@ export function RequestForm() {
                     <p>
                       입력하신 정보가 맞는지 다시 한 번 확인해주시기 바랍니다.
                     </p>
-                    <p className="text-red-500 font-semibold mt-2">
+                    <p className="text-red-500 font-semibold text-[15px] mt-3">
                       중간에 취소하거나 창을 닫게 되면 수령하기 어려우니
                       참고해주시면 감사하겠습니다.
                     </p>
@@ -135,7 +140,9 @@ export function RequestForm() {
                 >
                   취소
                 </Button>
-                <Button className="flex-1">다음</Button>
+                <Button className="flex-1" onClick={onNext}>
+                  다음
+                </Button>
               </div>
             </DialogContent>
           </Dialog>
