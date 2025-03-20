@@ -2,7 +2,7 @@ import { console_dev } from './get_env';
 
 export const Fetch = async <T>(
   url: string,
-  options: RequestInit
+  options?: RequestInit
 ): Promise<T> => {
   const URL = process.env.NEXT_PUBLIC_API_URL;
   const requestUrl = `${URL}${url}`;

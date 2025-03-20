@@ -19,6 +19,10 @@ body {
   /* rotate: -45deg; */
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes spin {
   from {
     transform: rotate(var(--start-rotation, 0deg));
