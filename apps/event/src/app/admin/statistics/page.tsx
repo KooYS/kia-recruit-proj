@@ -1,7 +1,5 @@
 import React from 'react';
 import { _Response, Fetch } from '@/app/_utils/api';
-import { console_dev } from '../_utils/get_env';
-
 //매번 다른 데이터를 가져와 렌더링해야 하는 페이지인데, API 도 Next.js 내에서 구현을 하다보니 해당 페이지를 정적 페이지로 빌드하려고 하니 문제가 생기는 것 같습니다. 클라이언트 컴포넌트는 해당 에러 X, 기본적인 서버 컴포넌트들이 에러가 되는 것 같습니다. 그 때 아래를 추가해서 동적페이지로 설정
 export const dynamic = 'force-dynamic';
 

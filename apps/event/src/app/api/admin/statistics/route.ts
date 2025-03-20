@@ -1,4 +1,3 @@
-import { console_dev } from '@/app/_utils/get_env';
 import { prisma } from '@repo/db';
 import type { NextRequest } from 'next/server';
 
