@@ -124,7 +124,6 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
                 <DialogTitle className="text-black">축하합니다!</DialogTitle>
                 <DialogDescription asChild>
                   <div>
-                    <p>축하합니다! {user?.username}님</p>
                     <p>{prize?.description}</p>
                     <p>
                       <Image
