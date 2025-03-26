@@ -36,13 +36,14 @@ export async function GET(request: NextRequest) {
       return {
         ...prev,
         [current.prizeName]:
-          prev[current.prizeName as '1등' | '2등' | '3등'] + 1,
+          prev[current.prizeName as '1등' | '2등' | '3등' | '4등'] + 1,
       };
     },
     {
       '1등': 0,
       '2등': 0,
       '3등': 0,
+      '4등': 0,
     }
   );
 
