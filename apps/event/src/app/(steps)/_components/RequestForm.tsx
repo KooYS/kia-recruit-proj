@@ -80,10 +80,12 @@ export function RequestForm() {
     username: '',
     phone: '',
   };
-  const [isIn, setIsIn] = useLocalStorage('isIn', false);
-  const [_, setUniversity] = useLocalStorage('u', university);
+
+  const [isIn, setIsIn, rmIsIn] = useLocalStorage('isIn', false);
+  const [_, setUniversity, rmUniversity] = useLocalStorage('u', university);
   const [user, setUser, rmUser] = useLocalStorage('user', defaultValues);
   const [popupOpen, setPopupOpen] = React.useState(false);
+  const [isLocalStorageRm, setIsLocalStorageRm] = React.useState(0);
   const { push } = useRouter();
   const form = useForm<FormType>({
     resolver: zodResolver(FormSchema),
@@ -111,6 +113,14 @@ export function RequestForm() {
       `1/submit?university=${data.university}&major=${data.major}&username=${data.username}&phone=${data.phone}`
     );
   };
+
+  React.useEffect(() => {
+    if (isLocalStorageRm > 12) {
+      rmIsIn();
+      rmUniversity();
+      rmUser();
+    }
+  }, [isLocalStorageRm]);
   React.useEffect(() => {
     console.log(university);
     form.setValue('university', university || '');
@@ -165,7 +175,10 @@ export function RequestForm() {
           </Dialog>
 
           {isIn ? (
-            <div className="text-center font-semibold ">
+            <div
+              className="text-center font-semibold "
+              onClick={() => setIsLocalStorageRm(isLocalStorageRm + 1)}
+            >
               {user.username}님 이미 참여하였습니다.
             </div>
           ) : (
