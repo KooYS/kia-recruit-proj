@@ -134,9 +134,8 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
                         alt={prize?.option || ''}
                         className="m-auto"
                       />
-                      {prize?.option}
                     </p>
-                    <p>을/를 이벤트 부스로 오셔서 해당 화면을 보여주시고</p>
+                    <p>이벤트 부스로 오셔서 해당 화면을 보여주시고</p>
                     <p>상품을 수령해 주세요.</p>
                   </div>
                 </DialogDescription>
