@@ -51,7 +51,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     {
       option: '2등',
       optionHide: true,
-      description: '커피',
+      description: '아메리카노',
       style: { backgroundColor: '#B2DAFC', textColor: 'black' },
       weight: 100 / 310,
       limit:

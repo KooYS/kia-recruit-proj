@@ -29,12 +29,12 @@ const Page = async () => {
             <div className="font-extrabold text-lg">{item.university}</div>
             <div className="space-y-1 mt-2">
               <p className="font-semibold text-gray-500">
-                1등(모바일교환권(1만원))
+                1등(구글기프트카드(1만원))
               </p>
               <p className="text-[20px]">{item.first_prize}명</p>
             </div>
             <div className="space-y-1 mt-2">
-              <p className="font-semibold text-gray-500">2등(커피)</p>
+              <p className="font-semibold text-gray-500">2등(아메리카노)</p>
               <p className="text-[20px]">{item.second_prize}명</p>
             </div>
             <div className="space-y-1 mt-2">
