@@ -72,11 +72,11 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     },
   ]);
 
-  const isAvail = false;
-  prizes.reduce((acc, prize) => {
-    acc = acc + prize.limit;
-    return acc;
-  }, 0) > 0;
+  const isAvail =
+    prizes.reduce((acc, prize) => {
+      acc = acc + prize.limit;
+      return acc;
+    }, 0) > 0;
 
   const [prize, setPrize] = React.useState<RouletteData>();
   const requiredStep = async (prize: string, prizeIndex: number) => {
@@ -107,7 +107,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     <div className="h-full">
       {isAvail ? (
         <>
-          <div className="flex flex-col items-center justify-center h-full gap-0">
+          <div className="flex flex-col items-center justify-center h-full my-10">
             <RouletteWheel
               prizes={prizes}
               requiredStep={requiredStep}
@@ -155,7 +155,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
           </Dialog>
         </>
       ) : (
-        <div className="w-full text-center h-full flex flex-col justify-center items-center">
+        <div className="w-full text-center h-full flex flex-col justify-center items-center my-10">
           <div className="py-5 px-8 bg-white text-black rounded-md h-fit font-semibold">
             상품이 모두 소진되었습니다.
           </div>
