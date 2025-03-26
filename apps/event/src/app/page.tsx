@@ -16,8 +16,8 @@ export default async function Page({ searchParams }: PageProps) {
 
   if (!u || u === '') {
     return (
-      <div className="absolute inset-0 max-w-[640px] h-fit my-auto border rounded-lg p-5 sm:m-auto m-5">
-        <div className="text-center font-semibold">
+      <div className="max-w-[640px] h-full my-auto p-5 sm:m-auto flex flex-col justify-center items-center">
+        <div className="text-center h-fit font-semibold text-black border rounded-lg  bg-white p-5 ">
           잘못된 경로입니다. 다시 QR 스캔을 해주세요.
         </div>
       </div>

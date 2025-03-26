@@ -165,7 +165,7 @@ export function RequestForm() {
           </Dialog>
 
           {isIn ? (
-            <div className="text-center font-semibold">
+            <div className="text-center font-semibold ">
               {user.username}님 이미 참여하였습니다.
             </div>
           ) : (

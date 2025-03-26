@@ -72,6 +72,12 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     },
   ]);
 
+  const isAvail = false;
+  prizes.reduce((acc, prize) => {
+    acc = acc + prize.limit;
+    return acc;
+  }, 0) > 0;
+
   const [prize, setPrize] = React.useState<RouletteData>();
   const requiredStep = async (prize: string, prizeIndex: number) => {
     const res = await Fetch<_Response<{ message: string }>>('/api/prize', {
@@ -98,53 +104,63 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center  gap-0">
-        <RouletteWheel
-          prizes={prizes}
-          requiredStep={requiredStep}
-          onFinished={onFinished}
-        />
-      </div>
-      <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
-        <DialogContentWithoutX
-          onInteractOutside={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <DialogHeader className="!text-center">
-            <DialogTitle className="text-black">축하합니다!</DialogTitle>
-            <DialogDescription asChild>
-              <div>
-                <p>축하합니다! {user?.username}님</p>
-                <p>{prize?.description}</p>
-                <p>
-                  <Image
-                    src={`/prize/${prize?.option}.png`}
-                    width={256}
-                    height={256}
-                    alt={prize?.option || ''}
-                    className="m-auto"
-                  />
-                  {prize?.option}
-                </p>
-                <p>을/를 이벤트 부스로 오셔서 해당 화면을 보여주시고</p>
-                <p>상품을 수령해 주세요.</p>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex gap-2">
-            <Button
-              className="flex-1"
-              onClick={() => {
-                setPopupOpen(false);
+    <div className="h-full">
+      {isAvail ? (
+        <>
+          <div className="flex flex-col items-center justify-center h-full gap-0">
+            <RouletteWheel
+              prizes={prizes}
+              requiredStep={requiredStep}
+              onFinished={onFinished}
+            />
+          </div>
+          <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
+            <DialogContentWithoutX
+              onInteractOutside={(e) => {
+                e.preventDefault();
               }}
             >
-              수령하기
-            </Button>
+              <DialogHeader className="!text-center">
+                <DialogTitle className="text-black">축하합니다!</DialogTitle>
+                <DialogDescription asChild>
+                  <div>
+                    <p>축하합니다! {user?.username}님</p>
+                    <p>{prize?.description}</p>
+                    <p>
+                      <Image
+                        src={`/prize/${prize?.option}.png`}
+                        width={256}
+                        height={256}
+                        alt={prize?.option || ''}
+                        className="m-auto"
+                      />
+                      {prize?.option}
+                    </p>
+                    <p>을/를 이벤트 부스로 오셔서 해당 화면을 보여주시고</p>
+                    <p>상품을 수령해 주세요.</p>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex gap-2">
+                <Button
+                  className="flex-1"
+                  onClick={() => {
+                    setPopupOpen(false);
+                  }}
+                >
+                  수령하기
+                </Button>
+              </div>
+            </DialogContentWithoutX>
+          </Dialog>
+        </>
+      ) : (
+        <div className="w-full text-center h-full flex flex-col justify-center items-center">
+          <div className="py-5 px-8 bg-white text-black rounded-md h-fit font-semibold">
+            상품이 모두 소진되었습니다.
           </div>
-        </DialogContentWithoutX>
-      </Dialog>
+        </div>
+      )}
     </div>
   );
 };

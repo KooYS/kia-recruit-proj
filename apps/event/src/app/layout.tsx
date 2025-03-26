@@ -40,12 +40,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} h-full max-w-[640px] m-auto`}
+        className={`${geistSans.variable} ${geistMono.variable} h-full max-w-[640px] m-auto py-5`}
       >
-        <div className="absolute max-w-[640px] top-1/2 -translate-y-1/2 m-auto h-full ">
-          <MainTitleLogo className="w-[90%] h-auto mx-auto my-10" />
-          <NuqsAdapter>{children}</NuqsAdapter>
-          <KiaLogo className="w-[70px] h-auto mx-auto py-10" />
+        <div className=" max-w-[640px] m-auto h-full flex flex-col ">
+          <MainTitleLogo className="w-[90%] h-auto mx-auto " />
+          <div className="flex-1">
+            <NuqsAdapter>{children}</NuqsAdapter>
+          </div>
+          <KiaLogo className="w-[70px] h-auto mx-auto py-3" />
         </div>
       </body>
     </html>

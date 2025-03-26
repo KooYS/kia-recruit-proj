@@ -3,10 +3,12 @@ import { RequestForm } from '../_components/RequestForm';
 
 const Page = () => {
   return (
-    <div className=" max-w-[640px] h-fit my-auto border rounded-lg p-5 md:m-auto m-10 bg-white text-black">
-      <Suspense>
-        <RequestForm />
-      </Suspense>
+    <div className="h-full flex flex-col justify-center items-center ">
+      <div className=" max-w-[640px] h-fit my-auto border rounded-lg p-5 md:m-auto  bg-white text-black">
+        <Suspense>
+          <RequestForm />
+        </Suspense>
+      </div>
     </div>
   );
 };
