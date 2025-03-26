@@ -5,8 +5,14 @@ interface RouletteContainerProps extends PropsWithChildren {
   style: CSSProperties;
 }
 
-export const RouletteContainer: FC<RouletteContainerProps> = ({ children, style }) => (
-  <div style={style} className="relative w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none">
+export const RouletteContainer: FC<RouletteContainerProps> = ({
+  children,
+  style,
+}) => (
+  <div
+    style={style}
+    className="relative w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none"
+  >
     {children}
   </div>
 );
@@ -35,7 +41,7 @@ export const RotationContainer: FC<RotationContainerProps> = ({
   disableInitialAnimation = false,
   continueSpinningTime,
   stopSpinningTime,
-  finalRotationDegrees
+  finalRotationDegrees,
 }) => {
   const dynamicStyle: CustomCSSProperties = {
     transform: `rotate(${startRotationDegrees}deg)`,
@@ -44,12 +50,15 @@ export const RotationContainer: FC<RotationContainerProps> = ({
     '--stop-spin-time': `${stopSpinningTime / 1000}s`,
     '--total-spin-time': `${(startSpinningTime + continueSpinningTime) / 1000}s`,
     '--start-rotation': `${startRotationDegrees}deg`,
-    '--final-rotation': `${1440 + finalRotationDegrees}deg`
+    '--final-rotation': `${1440 + finalRotationDegrees}deg`,
   };
 
   return (
     <div
-      className={cn("absolute w-full inset-0 flex justify-center items-center", className)}
+      className={cn(
+        'absolute w-full inset-0 flex justify-center items-center',
+        className
+      )}
       style={dynamicStyle}
       data-classkey={classKey}
       data-disable-animation={disableInitialAnimation}
@@ -65,12 +74,16 @@ interface RoulettePointerImageProps {
   style?: CSSProperties;
 }
 
-export const RoulettePointerImage: FC<RoulettePointerImageProps> = ({ src, alt, style }) => (
+export const RoulettePointerImage: FC<RoulettePointerImageProps> = ({
+  src,
+  alt,
+  style,
+}) => (
   <img
     src={src}
     alt={alt}
     style={style}
-    className="absolute left-1/2 -translate-x-1/2 -top-5 z-[5] w-[17%] select-none pointer-events-none"
+    className="absolute left-1/2 -translate-x-1/2 -top-8 z-[5] w-[10%] select-none pointer-events-none"
     draggable="false"
   />
 );

@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
             SUM(CASE WHEN p.prizeName = '1등' THEN 1 ELSE 0 END) as first_prize,
             SUM(CASE WHEN p.prizeName = '2등' THEN 1 ELSE 0 END) as second_prize,
             SUM(CASE WHEN p.prizeName = '3등' THEN 1 ELSE 0 END) as third_prize
+            SUM(CASE WHEN p.prizeName = '4등' THEN 1 ELSE 0 END) as fourth_prize
         FROM User u
         LEFT JOIN Prize p ON u.id = p.userId
         GROUP BY u.university

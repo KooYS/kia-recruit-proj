@@ -8,6 +8,7 @@ interface PrizeType {
   first_prize: number;
   second_prize: number;
   third_prize: number;
+  fourth_prize: number;
 }
 
 const Page = async () => {
@@ -37,8 +38,12 @@ const Page = async () => {
               <p className="text-[20px]">{item.second_prize}명</p>
             </div>
             <div className="space-y-1 mt-2">
-              <p className="font-semibold text-gray-500">3등(노트북 스티커)</p>
+              <p className="font-semibold text-gray-500">3등(아이스티)</p>
               <p className="text-[20px]">{item.third_prize}명</p>
+            </div>
+            <div className="space-y-1 mt-2">
+              <p className="font-semibold text-gray-500">4등(노트북 스티커)</p>
+              <p className="text-[20px]">{item.fourth_prize}명</p>
             </div>
           </div>
         ))}

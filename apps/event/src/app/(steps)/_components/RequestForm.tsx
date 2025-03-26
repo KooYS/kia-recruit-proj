@@ -6,7 +6,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
+  FormDescription as OriginalFormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +22,7 @@ import {
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
 
-import { Input } from '@repo/ui/components/ui/input';
+import { Input as OriginalInput } from '@repo/ui/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { parseAsString, useQueryStates } from 'nuqs';
 import { useQueryState } from 'nuqs';
@@ -43,12 +43,26 @@ const FormSchema = z.object({
   phone: z
     .string()
     .length(11, {
-      message: '연락처를 010을 포함하여 11자리로 입력해주세요.',
+      message: '연락처를 010 을 포함하여 11자리로 입력해주세요.',
     })
     .regex(/^\d+$/, {
-      message: '연락처를 -를 제외하고 입력해주세요.',
+      message: '연락처는 하이픈(-) 제외하고 입력해주세요',
     }),
 });
+
+const FormDescription = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <OriginalFormDescription className="text-xs md:text-base">
+      {children}
+    </OriginalFormDescription>
+  );
+};
+
+const Input = (props: React.ComponentProps<typeof OriginalInput>) => {
+  return (
+    <OriginalInput className="text-xs px-2 md:px-3 md:text-base" {...props} />
+  );
+};
 
 type FormType = z.infer<typeof FormSchema>;
 
@@ -112,8 +126,8 @@ export function RequestForm() {
                 e.preventDefault();
               }}
             >
-              <DialogHeader>
-                <DialogTitle>안내</DialogTitle>
+              <DialogHeader className="!text-center">
+                <DialogTitle className="text-black">안내</DialogTitle>
                 <DialogDescription asChild>
                   <div className="my-5">
                     <p>안녕하세요! {form.getValues()?.username}님</p>
@@ -123,11 +137,14 @@ export function RequestForm() {
                       <p>연락처 - {form.getValues()?.phone}</p>
                     </div>
                     <p>
-                      입력하신 정보가 맞는지 다시 한 번 확인해주시기 바랍니다.
+                      입력하신 정보가 맞는지
+                      <br />
+                      다시 한 번 확인해주시기 바랍니다.
                     </p>
-                    <p className="text-red-500 font-semibold text-[15px] mt-3">
-                      중간에 취소하거나 창을 닫게 되면 수령하기 어려우니
-                      참고해주시면 감사하겠습니다.
+                    <p className="text-[#C80000] font-semibold text-[15px] mt-3">
+                      중간에 취소 버튼을 누르거나 창을 닫으면
+                      <br />
+                      상품 수령이 어려울 수 있으니 참고해 주세요.
                     </p>
                   </div>
                 </DialogDescription>
@@ -226,7 +243,7 @@ export function RequestForm() {
                         <FormMessage />
                       ) : (
                         <FormDescription>
-                          연락처를 -를 제외하고 입력해주세요.
+                          연락처는 하이픈(-) 제외하고 입력해주세요.
                         </FormDescription>
                       )}
                     </FormItem>

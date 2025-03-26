@@ -10,44 +10,64 @@ import {
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
 import { Prize, User } from '@repo/db';
-import { console_dev } from '@/app/_utils/get_env';
+import Image from 'next/image';
 import { _Response, Fetch } from '@/app/_utils/api';
+import { Button } from '@repo/ui/components/ui/button';
 
 interface Props {
   user?: User & {
     prize: Prize | null;
   };
-  receivedPrizeCount: { '1등': number; '2등': number; '3등': number };
+  receivedPrizeCount: {
+    '1등': number;
+    '2등': number;
+    '3등': number;
+    '4등': number;
+  };
 }
 const Step2Container = ({ user, receivedPrizeCount }: Props) => {
   const [popupOpen, setPopupOpen] = React.useState(false);
   const [prizes, setPrizes] = React.useState<RouletteData[]>([
     {
       option: '1등',
-      description: '모바일교환권(1만원)',
-      style: { backgroundColor: 'white', textColor: 'black' },
+      optionHide: true,
+      description: '구글\n기프트카드\n1만원권',
+      style: { backgroundColor: '#B2DAFC', textColor: 'black' },
       weight: 10 / 310,
       limit:
         10 - receivedPrizeCount['1등'] > 0 ? 10 - receivedPrizeCount['1등'] : 0,
     },
     {
-      option: '2등',
-      description: '커피',
-      style: { backgroundColor: 'white', textColor: 'black' },
-      weight: 200 / 310,
-      limit:
-        200 - receivedPrizeCount['2등'] > 0
-          ? 200 - receivedPrizeCount['2등']
-          : 0,
-    },
-    {
       option: '3등',
-      description: '노트북 스티커',
-      style: { backgroundColor: 'white', textColor: 'black' },
+      optionHide: true,
+      description: '아이스티',
+      style: { backgroundColor: '#89B7E8', textColor: 'black' },
       weight: 100 / 310,
       limit:
         100 - receivedPrizeCount['3등'] > 0
           ? 100 - receivedPrizeCount['3등']
+          : 0,
+    },
+    {
+      option: '2등',
+      optionHide: true,
+      description: '커피',
+      style: { backgroundColor: '#B2DAFC', textColor: 'black' },
+      weight: 100 / 310,
+      limit:
+        100 - receivedPrizeCount['2등'] > 0
+          ? 100 - receivedPrizeCount['2등']
+          : 0,
+    },
+    {
+      option: '4등',
+      optionHide: true,
+      description: '스티커팩',
+      style: { backgroundColor: '#89B7E8', textColor: 'black' },
+      weight: 100 / 310,
+      limit:
+        100 - receivedPrizeCount['4등'] > 0
+          ? 100 - receivedPrizeCount['4등']
           : 0,
     },
   ]);
@@ -71,11 +91,15 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
   const onFinished = (prize: string) => {
     setPrize(prizes.find((p) => p.option === prize));
     setPopupOpen(true);
+    setTimeout(() => {
+      document.body.removeAttribute('data-scroll-locked');
+      document.body.style['pointerEvents'] = 'auto';
+    }, 10);
   };
 
   return (
-    <div className="h-full m-auto">
-      <div className="flex flex-col items-center justify-center h-full gap-10">
+    <div>
+      <div className="flex flex-col items-center justify-center  gap-0">
         <RouletteWheel
           prizes={prizes}
           requiredStep={requiredStep}
@@ -88,19 +112,37 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
             e.preventDefault();
           }}
         >
-          <DialogHeader>
-            <DialogTitle>안내</DialogTitle>
+          <DialogHeader className="!text-center">
+            <DialogTitle className="text-black">축하합니다!</DialogTitle>
             <DialogDescription asChild>
               <div>
                 <p>축하합니다! {user?.username}님</p>
+                <p>{prize?.description}</p>
                 <p>
-                  <b>{prize?.option}</b>에 당첨되셨습니다.
+                  <Image
+                    src={`/prize/${prize?.option}.png`}
+                    width={256}
+                    height={256}
+                    alt={prize?.option || ''}
+                    className="m-auto"
+                  />
+                  {prize?.option}
                 </p>
-                <p>{prize?.description}을/를 이벤트 부스로 오셔서</p>
-                <p>해당 화면을 보여주시고 수령해 주세요.</p>
+                <p>을/를 이벤트 부스로 오셔서 해당 화면을 보여주시고</p>
+                <p>상품을 수령해 주세요.</p>
               </div>
             </DialogDescription>
           </DialogHeader>
+          <div className="flex gap-2">
+            <Button
+              className="flex-1"
+              onClick={() => {
+                setPopupOpen(false);
+              }}
+            >
+              수령하기
+            </Button>
+          </div>
         </DialogContentWithoutX>
       </Dialog>
     </div>

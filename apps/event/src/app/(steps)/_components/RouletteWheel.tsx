@@ -11,6 +11,7 @@ export interface RouletteData {
   weight: number;
   limit: number;
   image?: ImagePropsLocal;
+  optionHide?: boolean;
 }
 
 interface RouletteWheelProps {
@@ -88,28 +89,30 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
 
   return (
     <div className="roulette_container">
-      <div className="roulette_board">
+      <div className="relative roulette_board rounded-full p-3 bg-white border-[#82898F] border-8">
         <Wheel
           disableInitialAnimation
           spinDuration={0.5}
           fontWeight={300}
           textDistance={60}
-          radiusLineWidth={1}
+          radiusLineWidth={0}
           fontSize={30}
-          outerBorderWidth={1}
+          outerBorderWidth={8}
+          outerBorderColor="#89B7E8"
           mustStartSpinning={startSpin}
           prizeNumber={prizeNumber}
           data={data}
-          backgroundColors={['#3e3e3e', '#df3428']}
-          textColors={['#ffffff']}
           onStopSpinning={() =>
             _onFinished(data[prizeNumber]?.option || 'error')
           }
         />
+        <Button
+          onClick={handleSpinClick}
+          className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10 rounded-full border-8 border-[#6A9DDE] w-[70px] h-[70px] md:w-[90px] md:h-[90px] font-bold"
+        >
+          START
+        </Button>
       </div>
-      <Button onClick={handleSpinClick} className="mt-4">
-        선물받기
-      </Button>
     </div>
   );
 };

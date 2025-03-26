@@ -21,7 +21,11 @@ const Page = async ({ searchParams }: PageProps) => {
   const { u, m, n, p } = await loadSearchParams(searchParams);
 
   if (!u || !m || !n || !p) {
-    return <div>URL 접근이 잘못되었습니다. 다시 처음 QR 스캔을 해주세요.</div>;
+    return (
+      <div className="text-center">
+        URL 접근이 잘못되었습니다. 다시 처음 QR 스캔을 해주세요.
+      </div>
+    );
   }
 
   const user = await prisma.user.findFirst({
@@ -38,10 +42,8 @@ const Page = async ({ searchParams }: PageProps) => {
   });
 
   const { data: receivedPrizeCount } = await Fetch<{
-    data: { '1등': number; '2등': number; '3등': number };
+    data: { '1등': number; '2등': number; '3등': number; '4등': number };
   }>(`/api/prize?u=${u}`, {});
-
-  console.log(receivedPrizeCount);
 
   return (
     <Suspense>
