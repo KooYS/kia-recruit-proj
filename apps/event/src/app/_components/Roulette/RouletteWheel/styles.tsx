@@ -69,21 +69,19 @@ export const RotationContainer: FC<RotationContainerProps> = ({
 };
 
 interface RoulettePointerImageProps {
-  src: string;
-  alt: string;
+  src?: string;
+  alt?: string;
   style?: CSSProperties;
 }
 
-export const RoulettePointerImage: FC<RoulettePointerImageProps> = ({
-  src,
-  alt,
-  style,
-}) => (
-  <img
-    src={src}
-    alt={alt}
-    style={style}
+export const RoulettePointerImage: FC<RoulettePointerImageProps> = () => (
+  <svg
+    viewBox="0 0 293 478"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
     className="absolute left-1/2 -translate-x-1/2 -top-8 z-[5] w-[10%] select-none pointer-events-none"
-    draggable="false"
-  />
+  >
+    <path d="M0.569946 0L146.53 477.02V118.78L0.569946 0Z" fill="#F76666" />
+    <path d="M146.53 118.78V477.02L292.48 0L146.53 118.78Z" fill="#F44A4A" />
+  </svg>
 );

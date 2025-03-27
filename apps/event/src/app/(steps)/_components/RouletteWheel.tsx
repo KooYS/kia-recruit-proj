@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Wheel } from '../../_components/Roulette/RouletteWheel/index';
 import { ImagePropsLocal } from '@/app/_components/Roulette/RouletteWheel/types';
+import Board from '@/app/_components/svg/Board';
 
 export interface RouletteData {
   option: string;
@@ -92,15 +93,16 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
     <div className="roulette_container">
       <div className="relative roulette_board rounded-full p-3 bg-white border-[#82898F] border-8">
         {!isCanvasReady && (
-          <img
-            src="/board.png" // placeholder 이미지 경로
-            alt="Roulette Placeholder"
-            className="p-[3px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none"
-            style={{
-              transition: 'opacity 0.3s ease-in-out',
-              opacity: isCanvasReady ? 0 : 1,
-            }}
-          />
+          // <img
+          //   src="/board.png" // placeholder 이미지 경로
+          //   alt="Roulette Placeholder"
+          //   className="p-[3px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none"
+          //   style={{
+          //     transition: 'opacity 0.3s ease-in-out',
+          //     opacity: isCanvasReady ? 0 : 1,
+          //   }}
+          // />
+          <Board className="p-[3px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none" />
         )}
         <div
           style={{

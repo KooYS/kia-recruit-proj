@@ -271,8 +271,8 @@ export const Wheel = ({
         disableInitialAnimation={disableInitialAnimation}
       >
         <WheelCanvas
-          width="500"
-          height="500"
+          width="1000"
+          height="1000"
           data={wheelData}
           outerBorderColor={outerBorderColor}
           outerBorderWidth={outerBorderWidth}
@@ -291,9 +291,9 @@ export const Wheel = ({
         />
       </RotationContainer>
       <RoulettePointerImage
-        style={pointerProps?.style}
-        src={pointerProps?.src || './roulette-pointer.png'}
-        alt="roulette-static"
+      // style={pointerProps?.style}
+      // src={pointerProps?.src || './roulette-pointer.png'}
+      // alt="roulette-static"
       />
     </RouletteContainer>
   );

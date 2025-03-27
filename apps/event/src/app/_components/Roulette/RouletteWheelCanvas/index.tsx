@@ -209,16 +209,16 @@ const drawWheel = (
           );
         }
         const textPrize = data[i]?.description;
-        ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+        ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
         ctx.fillStyle = (style && style.textColor) as string;
 
         const splitData = textPrize?.split('\n');
         splitData?.forEach((line, index) => {
-          const size = fontSize * 1.2;
+          const size = fontSize * 2.5;
           ctx.fillText(
             line,
             -ctx.measureText(line || '').width / 2,
-            index * size - (splitData?.length > 1 ? size / 1 : 0)
+            index * size - (splitData?.length > 1 ? size : 0)
           );
         });
       }
