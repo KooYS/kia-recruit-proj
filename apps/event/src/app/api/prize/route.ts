@@ -92,7 +92,11 @@ export async function POST(request: NextRequest) {
           status: 403,
           success: false,
           body: {
-            message: `이미 참여하신 이력이 있습니다.\n당첨 상품: ${prizeTitle[isExist.prizeName as keyof typeof prizeTitle].replaceAll('\n', ' ')}\n수령 시간: ${isExist.receivedAt.toLocaleString('ko-KR')}`,
+            message: `이미 참여하신 이력이 있습니다.\n당첨 상품: ${prizeTitle[isExist.prizeName as keyof typeof prizeTitle].replaceAll('\n', ' ')}\n수령 시간: ${new Date(
+              isExist.receivedAt
+            ).toLocaleString('ko-KR', {
+              timeZone: 'Asia/Seoul',
+            })}`,
           },
         },
         { status: 200 }
