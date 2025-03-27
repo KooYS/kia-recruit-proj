@@ -13,6 +13,7 @@ import { Prize, User } from '@repo/db';
 import Image from 'next/image';
 import { _Response, Fetch } from '@/app/_utils/api';
 import { Button } from '@repo/ui/components/ui/button';
+import { prizeTitle } from '@/app/_utils/prize';
 
 interface Props {
   user?: User & {
@@ -31,7 +32,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     {
       option: '1등',
       optionHide: true,
-      description: '구글\n기프트카드\n1만원권',
+      description: prizeTitle['1등'],
       style: { backgroundColor: '#B2DAFC', textColor: 'black' },
       weight: 10 / 310,
       limit:
@@ -40,7 +41,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     {
       option: '3등',
       optionHide: true,
-      description: '아이스티',
+      description: prizeTitle['3등'],
       style: { backgroundColor: '#89B7E8', textColor: 'black' },
       weight: 100 / 310,
       limit:
@@ -51,7 +52,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     {
       option: '2등',
       optionHide: true,
-      description: '아메리카노',
+      description: prizeTitle['2등'],
       style: { backgroundColor: '#B2DAFC', textColor: 'black' },
       weight: 100 / 310,
       limit:
@@ -62,7 +63,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     {
       option: '4등',
       optionHide: true,
-      description: '스티커팩',
+      description: prizeTitle['4등'],
       style: { backgroundColor: '#89B7E8', textColor: 'black' },
       weight: 100 / 310,
       limit:
@@ -81,7 +82,9 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
   const [prize, setPrize] = React.useState<RouletteData>();
   const [isGetPrize, setIsGetPrize] = React.useState<boolean>(false);
   const requiredStep = async (prize: string, prizeIndex: number) => {
-    const res = await Fetch<_Response<{ message: string }>>('/api/prize', {
+    const res = await Fetch<
+      _Response<{ message: string; pass?: Prize & { user: User } }>
+    >('/api/prize', {
       method: 'POST',
       body: JSON.stringify({
         user,
@@ -91,9 +94,52 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     });
     if (res.status === 200) return true;
     else {
-      alert(res.body.message);
-      return false;
+      if (res.body.pass) {
+        const prizeData = res.body.pass;
+        setPrize(prizes.find((p) => p.option === prizeData.prizeName));
+        setPopupOpen(true);
+        setTimeout(() => {
+          document.body.removeAttribute('data-scroll-locked');
+          document.body.style['pointerEvents'] = 'auto';
+        }, 10);
+        return false;
+      } else {
+        alert(res.body.message);
+        return false;
+      }
     }
+  };
+
+  const onReceived = async (prize: RouletteData) => {
+    const res = await Fetch<
+      _Response<{ message: string; pass?: Prize & { user: User } }>
+    >('/api/prize', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        user,
+        prizeName: prize,
+      }),
+    });
+
+    if (res.status === 200) {
+      setIsGetPrize(true);
+      return true;
+    }
+    // else {
+    //   if (res.body.pass) {
+    //     const prizeData = res.body.pass;
+    //     setPrize(prizes.find((p) => p.option === prizeData.prizeName));
+    //     setPopupOpen(true);
+    //     setTimeout(() => {
+    //       document.body.removeAttribute('data-scroll-locked');
+    //       document.body.style['pointerEvents'] = 'auto';
+    //     }, 10);
+    //     return false;
+    //   } else {
+    //     alert(res.body.message);
+    //     return false;
+    //   }
+    // }
   };
   const onFinished = (prize: string) => {
     setPrize(prizes.find((p) => p.option === prize));
@@ -146,7 +192,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
                   className="flex-1"
                   disabled={isGetPrize}
                   onClick={() => {
-                    setIsGetPrize(true);
+                    onReceived(prize as RouletteData);
                   }}
                 >
                   {isGetPrize ? '수령완료' : '수령확인(스태프전용)'}

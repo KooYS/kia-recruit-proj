@@ -1,3 +1,4 @@
+import { prizeTitle } from '@/app/_utils/prize';
 import { prisma } from '@repo/db';
 import type { NextRequest } from 'next/server';
 
@@ -32,16 +33,29 @@ export async function GET(request: NextRequest) {
   });
 
   if (isExist) {
-    return Response.json(
-      {
-        status: 200,
-        success: false,
-        body: {
-          message: `이미 ${isExist.user.username}님께서는 ${isExist.prizeName}으로 ${isExist.createdAt.toLocaleString()} 참여하였습니다.`,
+    if (isExist.receivedAt)
+      return Response.json(
+        {
+          status: 200,
+          success: false,
+          body: {
+            message: `이미 참여하신 이력이 있습니다.\n당첨 상품: ${prizeTitle[isExist.prizeName as keyof typeof prizeTitle].replaceAll('\n', ' ')}\n수령 시간: ${isExist.receivedAt.toLocaleString()}`,
+          },
         },
-      },
-      { status: 200 }
-    );
+        { status: 200 }
+      );
+    else {
+      return Response.json(
+        {
+          status: 200,
+          success: true,
+          body: {
+            message: ``,
+          },
+        },
+        { status: 200 }
+      );
+    }
   } else {
     return Response.json(
       {
@@ -75,7 +89,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (isExist) {
-      if (isExist.prize)
+      if (isExist.prize && isExist.prize.receivedAt)
         return Response.json(
           {
             status: 403,
