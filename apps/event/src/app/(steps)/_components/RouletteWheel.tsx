@@ -102,7 +102,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
           //     opacity: isCanvasReady ? 0 : 1,
           //   }}
           // />
-          <Board className="p-[3px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none" />
+          <Board className="p-[6px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none" />
         )}
         <div
           style={{
@@ -119,7 +119,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
             textDistance={60}
             radiusLineWidth={0}
             fontSize={30}
-            outerBorderWidth={8}
+            outerBorderWidth={4}
             outerBorderColor="#89B7E8"
             mustStartSpinning={startSpin}
             prizeNumber={prizeNumber}
