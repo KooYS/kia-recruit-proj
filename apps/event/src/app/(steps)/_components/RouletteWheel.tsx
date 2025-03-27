@@ -25,7 +25,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
   requiredStep,
 }) => {
   const [data, setData] = React.useState<RouletteData[]>(prizes);
-
+  const [isCanvasReady, setIsCanvasReady] = React.useState(false);
   const [startSpin, setStartSpin] = React.useState(false);
   const [prizeNumber, setPrizeNumber] = React.useState(0);
 
@@ -71,6 +71,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
       ) {
         setPrizeNumber(newPrizeNumber);
         setStartSpin(true);
+        return;
       }
     }
   };
@@ -90,28 +91,48 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
   return (
     <div className="roulette_container">
       <div className="relative roulette_board rounded-full p-3 bg-white border-[#82898F] border-8">
-        <Wheel
-          disableInitialAnimation
-          spinDuration={0.5}
-          fontWeight={300}
-          textDistance={60}
-          radiusLineWidth={0}
-          fontSize={30}
-          outerBorderWidth={8}
-          outerBorderColor="#89B7E8"
-          mustStartSpinning={startSpin}
-          prizeNumber={prizeNumber}
-          data={data}
-          onStopSpinning={() =>
-            _onFinished(data[prizeNumber]?.option || 'error')
-          }
-        />
-        <Button
-          onClick={handleSpinClick}
-          className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10 rounded-full border-8 border-[#6A9DDE] w-[70px] h-[70px] md:w-[90px] md:h-[90px] font-bold"
+        {!isCanvasReady && (
+          <img
+            src="/board.png" // placeholder 이미지 경로
+            alt="Roulette Placeholder"
+            className="p-[3px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none"
+            style={{
+              transition: 'opacity 0.3s ease-in-out',
+              opacity: isCanvasReady ? 0 : 1,
+            }}
+          />
+        )}
+        <div
+          style={{
+            opacity: isCanvasReady ? 1 : 0,
+            position: isCanvasReady ? 'relative' : 'absolute',
+            // transition: 'opacity 0.3s ease-in-out',
+          }}
         >
-          START
-        </Button>
+          <Wheel
+            onRendered={() => setIsCanvasReady(true)}
+            disableInitialAnimation
+            spinDuration={0.5}
+            fontWeight={300}
+            textDistance={60}
+            radiusLineWidth={0}
+            fontSize={30}
+            outerBorderWidth={8}
+            outerBorderColor="#89B7E8"
+            mustStartSpinning={startSpin}
+            prizeNumber={prizeNumber}
+            data={data}
+            onStopSpinning={() =>
+              _onFinished(data[prizeNumber]?.option || 'error')
+            }
+          />
+          <Button
+            onClick={handleSpinClick}
+            className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10 rounded-full border-8 border-[#6A9DDE] w-[70px] h-[70px] md:w-[90px] md:h-[90px] font-bold"
+          >
+            START
+          </Button>
+        </div>
       </div>
     </div>
   );

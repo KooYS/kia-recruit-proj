@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         status: 403,
         success: false,
         body: {
-          message: `이미 ${isExist.user.username}님께서는 ${isExist.prizeName}으로 ${isExist.createdAt.toLocaleString()} 참여하였습니다.`,
+          message: `이미 참여하신 이력이 있습니다. ${isExist.prizeName}으로 ${isExist.createdAt.toLocaleString()} 참여하였습니다.`,
         },
       },
       { status: 200 }

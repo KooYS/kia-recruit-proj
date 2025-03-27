@@ -52,7 +52,6 @@ const drawWheel = (
   data: WheelData[],
   drawWheelProps: DrawWheelProps
 ) => {
-  console.log(data);
   /* eslint-disable prefer-const */
   let {
     outerBorderColor,
@@ -82,152 +81,6 @@ const drawWheel = (
     ctx.clearRect(0, 0, 500, 500);
     ctx.strokeStyle = 'transparent';
     ctx.lineWidth = 0;
-
-    // if (backgroundImage) {
-    // const img = new Image();
-    // img.src = './board.png';
-    // img.onload = () => {
-    //   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    //   // drawWheelContent(canvas, ctx, data, drawWheelProps);
-    //   let startAngle = 0;
-    //   const outsideRadius = canvas.width / 2 - 10;
-
-    //   const clampedContentDistance = clamp(0, 100, textDistance);
-    //   const contentRadius = (outsideRadius * clampedContentDistance) / 100;
-
-    //   const clampedInsideRadius = clamp(0, 100, innerRadius);
-    //   const insideRadius = (outsideRadius * clampedInsideRadius) / 100;
-
-    //   const centerX = canvas.width / 2;
-    //   const centerY = canvas.height / 2;
-
-    //   for (let i = 0; i < data.length; i++) {
-    //     const { optionSize, style } = data[i] || {};
-
-    //     const arc =
-    //       (optionSize && (optionSize * (2 * Math.PI)) / QUANTITY) ||
-    //       (2 * Math.PI) / QUANTITY;
-    //     const endAngle = startAngle + arc;
-
-    //     ctx.fillStyle = (style && style.backgroundColor) as string;
-
-    //     ctx.beginPath();
-    //     ctx.arc(centerX, centerY, outsideRadius, startAngle, endAngle, false);
-    //     ctx.arc(centerX, centerY, insideRadius, endAngle, startAngle, true);
-    //     ctx.stroke();
-    //     // ctx.fill();
-    //     ctx.save();
-
-    //     // WHEEL RADIUS LINES
-    //     ctx.strokeStyle =
-    //       radiusLineWidth <= 0 ? 'transparent' : radiusLineColor;
-    //     ctx.lineWidth = radiusLineWidth;
-    //     drawRadialBorder(
-    //       ctx,
-    //       centerX,
-    //       centerY,
-    //       insideRadius,
-    //       outsideRadius,
-    //       startAngle
-    //     );
-    //     if (i === data.length - 1) {
-    //       drawRadialBorder(
-    //         ctx,
-    //         centerX,
-    //         centerY,
-    //         insideRadius,
-    //         outsideRadius,
-    //         endAngle
-    //       );
-    //     }
-
-    //     // WHEEL OUTER BORDER
-    //     ctx.strokeStyle =
-    //       outerBorderWidth <= 0 ? 'transparent' : outerBorderColor;
-    //     ctx.lineWidth = outerBorderWidth;
-    //     ctx.beginPath();
-    //     ctx.arc(
-    //       centerX,
-    //       centerY,
-    //       outsideRadius - ctx.lineWidth / 2,
-    //       0,
-    //       2 * Math.PI
-    //     );
-    //     ctx.closePath();
-    //     ctx.stroke();
-
-    //     // WHEEL INNER BORDER
-    //     ctx.strokeStyle =
-    //       innerBorderWidth <= 0 ? 'transparent' : innerBorderColor;
-    //     ctx.lineWidth = innerBorderWidth;
-    //     ctx.beginPath();
-    //     ctx.arc(
-    //       centerX,
-    //       centerY,
-    //       insideRadius + ctx.lineWidth / 2 - 1,
-    //       0,
-    //       2 * Math.PI
-    //     );
-    //     ctx.closePath();
-    //     ctx.stroke();
-
-    //     // CONTENT FILL
-    //     ctx.translate(
-    //       centerX + Math.cos(startAngle + arc / 2) * contentRadius,
-    //       centerY + Math.sin(startAngle + arc / 2) * contentRadius
-    //     );
-    //     let contentRotationAngle = startAngle + arc / 2;
-
-    //     if (data[i]?.image) {
-    //       // CASE IMAGE
-    //       contentRotationAngle +=
-    //         data[i]?.image && !data[i]?.image?.landscape ? Math.PI / 2 : 0;
-    //       ctx.rotate(contentRotationAngle);
-
-    //       const img = data[i]?.image?._imageHTML || new Image();
-    //       ctx.drawImage(
-    //         img,
-    //         (img.width + (data[i]?.image?.offsetX || 0)) / -2,
-    //         -(
-    //           img.height -
-    //           (data[i]?.image?.landscape ? 0 : 90) + // offsetY correction for non landscape images
-    //           (data[i]?.image?.offsetY || 0)
-    //         ) / 2,
-    //         img.width,
-    //         img.height
-    //       );
-    //     } else {
-    //       // CASE TEXT
-    //       contentRotationAngle += perpendicularText ? Math.PI / 2 : 0;
-    //       ctx.rotate(contentRotationAngle);
-
-    //       const text = data[i]?.option;
-    //       ctx.font = `${style?.fontStyle || fontStyle} ${
-    //         style?.fontWeight || fontWeight
-    //       } ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
-    //       ctx.fillStyle = (style && style.textColor) as string;
-    //       ctx.fillText(
-    //         text || '',
-    //         -ctx.measureText(text || '').width / 2,
-    //         fontSize / 2.7
-    //       );
-
-    //       const textPrize = data[i]?.description;
-    //       ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
-    //       ctx.fillStyle = (style && style.textColor) as string;
-    //       ctx.fillText(
-    //         textPrize || '',
-    //         -ctx.measureText(textPrize || '').width / 2,
-    //         fontSize * 2
-    //       );
-    //     }
-
-    //     ctx.restore();
-
-    //     startAngle = endAngle;
-    //   }
-    // };
-    // }
 
     let startAngle = 0;
     const outsideRadius = canvas.width / 2 - 10;
@@ -356,16 +209,16 @@ const drawWheel = (
           );
         }
         const textPrize = data[i]?.description;
-        ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${(style?.fontSize || fontSize) * 1.5}px ${style?.fontFamily || 'Arial,sans-serif'}`;
+        ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
         ctx.fillStyle = (style && style.textColor) as string;
 
         const splitData = textPrize?.split('\n');
         splitData?.forEach((line, index) => {
-          const size = fontSize * 2;
+          const size = fontSize * 1.2;
           ctx.fillText(
             line,
             -ctx.measureText(line || '').width / 2,
-            index * size - (splitData?.length > 1 ? size / 1.5 : 0)
+            index * size - (splitData?.length > 1 ? size / 1 : 0)
           );
         });
       }
@@ -374,166 +227,6 @@ const drawWheel = (
 
       startAngle = endAngle;
     }
-  }
-};
-
-const drawWheelContent = (
-  canvas: HTMLCanvasElement,
-  ctx: CanvasRenderingContext2D,
-  data: WheelData[],
-  drawWheelProps: DrawWheelProps
-) => {
-  let {
-    outerBorderColor,
-    outerBorderWidth,
-    innerRadius,
-    innerBorderColor,
-    innerBorderWidth,
-    radiusLineColor,
-    radiusLineWidth,
-    fontWeight,
-    fontSize,
-    fontStyle,
-    perpendicularText,
-    prizeMap,
-    textDistance,
-  } = drawWheelProps;
-
-  const QUANTITY = getQuantity(prizeMap);
-
-  let startAngle = 0;
-  const outsideRadius = canvas.width / 2 - 10;
-
-  const clampedContentDistance = clamp(0, 100, textDistance);
-  const contentRadius = (outsideRadius * clampedContentDistance) / 100;
-
-  const clampedInsideRadius = clamp(0, 100, innerRadius);
-  const insideRadius = (outsideRadius * clampedInsideRadius) / 100;
-
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-
-  for (let i = 0; i < data.length; i++) {
-    const { optionSize, style } = data[i] || {};
-
-    const arc =
-      (optionSize && (optionSize * (2 * Math.PI)) / QUANTITY) ||
-      (2 * Math.PI) / QUANTITY;
-    const endAngle = startAngle + arc;
-
-    ctx.fillStyle = (style && style.backgroundColor) as string;
-
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, outsideRadius, startAngle, endAngle, false);
-    ctx.arc(centerX, centerY, insideRadius, endAngle, startAngle, true);
-    ctx.stroke();
-    ctx.fill();
-    ctx.save();
-
-    // WHEEL RADIUS LINES
-    ctx.strokeStyle = radiusLineWidth <= 0 ? 'transparent' : radiusLineColor;
-    ctx.lineWidth = radiusLineWidth;
-    drawRadialBorder(
-      ctx,
-      centerX,
-      centerY,
-      insideRadius,
-      outsideRadius,
-      startAngle
-    );
-    if (i === data.length - 1) {
-      drawRadialBorder(
-        ctx,
-        centerX,
-        centerY,
-        insideRadius,
-        outsideRadius,
-        endAngle
-      );
-    }
-
-    // WHEEL OUTER BORDER
-    ctx.strokeStyle = outerBorderWidth <= 0 ? 'transparent' : outerBorderColor;
-    ctx.lineWidth = outerBorderWidth;
-    ctx.beginPath();
-    ctx.arc(
-      centerX,
-      centerY,
-      outsideRadius - ctx.lineWidth / 2,
-      0,
-      2 * Math.PI
-    );
-    ctx.closePath();
-    ctx.stroke();
-
-    // WHEEL INNER BORDER
-    ctx.strokeStyle = innerBorderWidth <= 0 ? 'transparent' : innerBorderColor;
-    ctx.lineWidth = innerBorderWidth;
-    ctx.beginPath();
-    ctx.arc(
-      centerX,
-      centerY,
-      insideRadius + ctx.lineWidth / 2 - 1,
-      0,
-      2 * Math.PI
-    );
-    ctx.closePath();
-    ctx.stroke();
-
-    // CONTENT FILL
-    ctx.translate(
-      centerX + Math.cos(startAngle + arc / 2) * contentRadius,
-      centerY + Math.sin(startAngle + arc / 2) * contentRadius
-    );
-    let contentRotationAngle = startAngle + arc / 2;
-
-    if (data[i]?.image) {
-      // CASE IMAGE
-      contentRotationAngle +=
-        data[i]?.image && !data[i]?.image?.landscape ? Math.PI / 2 : 0;
-      ctx.rotate(contentRotationAngle);
-
-      const img = data[i]?.image?._imageHTML || new Image();
-      ctx.drawImage(
-        img,
-        (img.width + (data[i]?.image?.offsetX || 0)) / -2,
-        -(
-          img.height -
-          (data[i]?.image?.landscape ? 0 : 90) + // offsetY correction for non landscape images
-          (data[i]?.image?.offsetY || 0)
-        ) / 2,
-        img.width,
-        img.height
-      );
-    } else {
-      // CASE TEXT
-      contentRotationAngle += perpendicularText ? Math.PI / 2 : 0;
-      ctx.rotate(contentRotationAngle);
-
-      const text = data[i]?.option;
-      ctx.font = `${style?.fontStyle || fontStyle} ${
-        style?.fontWeight || fontWeight
-      } ${(style?.fontSize || fontSize) * 2}px ${style?.fontFamily || 'Arial,sans-serif'}`;
-      ctx.fillStyle = (style && style.textColor) as string;
-      ctx.fillText(
-        text || '',
-        -ctx.measureText(text || '').width / 2,
-        fontSize / 2.7
-      );
-
-      const textPrize = data[i]?.description;
-      ctx.font = `${style?.fontStyle || fontStyle} ${'bold'} ${style?.fontSize || fontSize}px ${style?.fontFamily || 'Arial,sans-serif'}`;
-      ctx.fillStyle = (style && style.textColor) as string;
-      ctx.fillText(
-        textPrize || '',
-        -ctx.measureText(textPrize || '').width / 2,
-        fontSize * 2
-      );
-    }
-
-    ctx.restore();
-
-    startAngle = endAngle;
   }
 };
 
@@ -557,6 +250,8 @@ const WheelCanvas = ({
   textDistance,
 }: WheelCanvasProps): React.JSX.Element => {
   const canvasRef = createRef<HTMLCanvasElement>();
+  const offscreenCanvasRef = React.useRef<HTMLCanvasElement | null>(null);
+
   const drawWheelProps = {
     outerBorderColor,
     outerBorderWidth,
@@ -575,11 +270,30 @@ const WheelCanvas = ({
   };
 
   useEffect(() => {
-    drawWheel(canvasRef, data, drawWheelProps);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    if (!offscreenCanvasRef.current) {
+      offscreenCanvasRef.current = document.createElement('canvas');
+      offscreenCanvasRef.current.width = canvas.width;
+      offscreenCanvasRef.current.height = canvas.height;
+    }
+
+    const offscreenCtx = offscreenCanvasRef.current.getContext('2d');
+    if (!offscreenCtx) return;
+
+    // 오프스크린 캔버스에 그리기
+    drawWheel(offscreenCanvasRef, data, drawWheelProps);
+
+    // 완성된 이미지를 실제 캔버스에 복사
+    const ctx = canvas.getContext('2d');
+    ctx?.clearRect(0, 0, canvas.width, canvas.height);
+    ctx?.drawImage(offscreenCanvasRef.current, 0, 0);
   }, [canvasRef, data, drawWheelProps, rouletteUpdater]);
 
   return (
     <canvas
+      id="wheelCanvas"
       style={WheelCanvasStyle}
       ref={canvasRef}
       width={width}

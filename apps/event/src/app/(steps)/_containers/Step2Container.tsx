@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import RouletteWheel, { type RouletteData } from '../_components/RouletteWheel';
 import {
   Dialog,
@@ -79,6 +79,7 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
     }, 0) > 0;
 
   const [prize, setPrize] = React.useState<RouletteData>();
+  const [isGetPrize, setIsGetPrize] = React.useState<boolean>(false);
   const requiredStep = async (prize: string, prizeIndex: number) => {
     const res = await Fetch<_Response<{ message: string }>>('/api/prize', {
       method: 'POST',
@@ -134,19 +135,21 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
                         className="m-auto"
                       />
                     </p>
-                    <p>이벤트 부스로 오셔서 해당 화면을 보여주시고</p>
-                    <p>상품을 수령해 주세요.</p>
+                    <p>카페 럭키드로우 부스에서</p>
+                    <p>이 화면을 스태프에게 보여주시면</p>
+                    <p>상품(교환권)을 수령하실 수 있습니다.</p>
                   </div>
                 </DialogDescription>
               </DialogHeader>
               <div className="flex gap-2">
                 <Button
                   className="flex-1"
+                  disabled={isGetPrize}
                   onClick={() => {
-                    setPopupOpen(false);
+                    setIsGetPrize(true);
                   }}
                 >
-                  수령하기
+                  {isGetPrize ? '수령완료' : '수령확인(스태프전용)'}
                 </Button>
               </div>
             </DialogContentWithoutX>

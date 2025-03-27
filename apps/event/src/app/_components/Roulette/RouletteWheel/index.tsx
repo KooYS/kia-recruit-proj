@@ -35,6 +35,7 @@ interface Props {
   mustStartSpinning: boolean;
   prizeNumber: number;
   data: WheelData[];
+  onRendered?: () => any;
   onStopSpinning?: () => any;
   backgroundColors?: string[];
   textColors?: string[];
@@ -67,6 +68,7 @@ export const Wheel = ({
   mustStartSpinning,
   prizeNumber,
   data,
+  onRendered = () => null,
   onStopSpinning = () => null,
   backgroundColors = DEFAULT_BACKGROUND_COLORS,
   textColors = DEFAULT_TEXT_COLORS,
@@ -111,6 +113,13 @@ export const Wheel = ({
 
   const totalSpinningTime =
     startSpinningTime + continueSpinningTime + stopSpinningTime;
+
+  useEffect(() => {
+    // 모든 데이터 로딩 및 이미지 로딩이 완료되면 캔버스 준비 상태를 true로 설정
+    if (isDataUpdated && isFontLoaded && loadedImagesCounter === totalImages) {
+      onRendered && onRendered();
+    }
+  }, [isDataUpdated, isFontLoaded, loadedImagesCounter, totalImages]);
 
   const loadImage = (imageData: any, index: number) => {
     return new Promise((resolve) => {
@@ -164,7 +173,9 @@ export const Wheel = ({
         if (data[i]?.image) {
           setTotalImages((prevCounter) => prevCounter + 1);
           const image = await loadImage(data[i]?.image, i);
-          (wheelDataAux[i] as WheelData).image = image as undefined | ImagePropsLocal;
+          (wheelDataAux[i] as WheelData).image = image as
+            | undefined
+            | ImagePropsLocal;
           setLoadedImagesCounter((prevCounter) => prevCounter + 1);
           setRouletteUpdater((prevState) => !prevState);
         }
@@ -179,14 +190,13 @@ export const Wheel = ({
     loadImages();
   }, [data, backgroundColors, textColors]);
 
-
   useEffect(() => {
     if (mustStartSpinning && !isCurrentlySpinning) {
       setIsCurrentlySpinning(true);
       startSpinning();
       const selectedPrize =
         (prizeMap[prizeNumber] || [])[
-        Math.floor(Math.random() * (prizeMap[prizeNumber] || [])?.length)
+          Math.floor(Math.random() * (prizeMap[prizeNumber] || [])?.length)
         ] || 0;
 
       const finalRotationDegreesCalculated = getRotationDegrees(
@@ -194,7 +204,6 @@ export const Wheel = ({
         getQuantity(prizeMap)
       );
       setFinalRotationDegrees(finalRotationDegreesCalculated || -1);
-
     }
   }, [mustStartSpinning]);
 
@@ -222,8 +231,9 @@ export const Wheel = ({
   const setStartingOption = (optionIndex: number, optionMap: number[][]) => {
     if (startingOptionIndex >= 0) {
       const idx = Math.floor(optionIndex) % optionMap?.length;
-      const startingOption =
-        optionMap[idx] ? optionMap[idx][Math.floor(optionMap[idx]?.length / 2)] : 0;
+      const startingOption = optionMap[idx]
+        ? optionMap[idx][Math.floor(optionMap[idx]?.length / 2)]
+        : 0;
       setStartRotationDegrees(
         getRotationDegrees(startingOption || -1, getQuantity(optionMap), false)
       );
@@ -245,7 +255,7 @@ export const Wheel = ({
     <RouletteContainer
       style={
         !isFontLoaded ||
-          (totalImages > 0 && loadedImagesCounter !== totalImages)
+        (totalImages > 0 && loadedImagesCounter !== totalImages)
           ? { visibility: 'hidden' }
           : {}
       }
@@ -261,8 +271,8 @@ export const Wheel = ({
         disableInitialAnimation={disableInitialAnimation}
       >
         <WheelCanvas
-          width="900"
-          height="900"
+          width="500"
+          height="500"
           data={wheelData}
           outerBorderColor={outerBorderColor}
           outerBorderWidth={outerBorderWidth}

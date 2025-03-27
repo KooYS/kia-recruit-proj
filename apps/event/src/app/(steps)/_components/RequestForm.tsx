@@ -100,6 +100,10 @@ export function RequestForm() {
     if (isAvail.success) {
       console.log(form.getValues());
       setPopupOpen(true);
+      setTimeout(() => {
+        document.body.removeAttribute('data-scroll-locked');
+        document.body.style['pointerEvents'] = 'auto';
+      }, 10);
     } else {
       alert(isAvail.body.message);
     }
@@ -152,9 +156,9 @@ export function RequestForm() {
                       다시 한 번 확인해주시기 바랍니다.
                     </p>
                     <p className="text-[#C80000] font-semibold text-[15px] mt-3">
-                      중간에 취소 버튼을 누르거나 창을 닫으면
+                      진행중 화면을 나가거나 중단하시면
                       <br />
-                      상품 수령이 어려울 수 있으니 참고해 주세요.
+                      재참여가 어려울 수 있습니다!
                     </p>
                   </div>
                 </DialogDescription>
