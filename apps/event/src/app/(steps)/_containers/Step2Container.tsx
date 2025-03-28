@@ -14,8 +14,11 @@ import Image from 'next/image';
 import { _Response, Fetch } from '@/app/_utils/api';
 import { Button } from '@repo/ui/components/ui/button';
 import { prizeTitle } from '@/app/_utils/prize';
+import Board from '@/app/_components/svg/Board';
+import BoardYonsei from '@/app/_components/svg/BoardYonsei';
 
 interface Props {
+  university: string;
   user?: User & {
     prize: Prize | null;
   };
@@ -26,52 +29,94 @@ interface Props {
     '4등': number;
   };
 }
-const Step2Container = ({ user, receivedPrizeCount }: Props) => {
+const Step2Container = ({ university, user, receivedPrizeCount }: Props) => {
   const [popupOpen, setPopupOpen] = React.useState(false);
-  const [prizes, setPrizes] = React.useState<RouletteData[]>([
-    {
-      option: '1등',
-      optionHide: true,
-      description: prizeTitle['1등'],
-      style: { backgroundColor: '#B2DAFC', textColor: 'black' },
-      weight: 10 / 310,
-      limit:
-        10 - receivedPrizeCount['1등'] > 0 ? 10 - receivedPrizeCount['1등'] : 0,
-    },
-    {
-      option: '3등',
-      optionHide: true,
-      description: prizeTitle['3등'],
-      style: { backgroundColor: '#89B7E8', textColor: 'black' },
-      weight: 100 / 310,
-      limit:
-        100 - receivedPrizeCount['3등'] > 0
-          ? 100 - receivedPrizeCount['3등']
-          : 0,
-    },
-    {
-      option: '2등',
-      optionHide: true,
-      description: prizeTitle['2등'],
-      style: { backgroundColor: '#B2DAFC', textColor: 'black' },
-      weight: 100 / 310,
-      limit:
-        100 - receivedPrizeCount['2등'] > 0
-          ? 100 - receivedPrizeCount['2등']
-          : 0,
-    },
-    {
-      option: '4등',
-      optionHide: true,
-      description: prizeTitle['4등'],
-      style: { backgroundColor: '#89B7E8', textColor: 'black' },
-      weight: 100 / 310,
-      limit:
-        100 - receivedPrizeCount['4등'] > 0
-          ? 100 - receivedPrizeCount['4등']
-          : 0,
-    },
-  ]);
+
+  const IS_YONSEI = university === '연세대학교';
+  const [prizes, setPrizes] = React.useState<RouletteData[]>(
+    IS_YONSEI
+      ? [
+          {
+            option: '1등',
+            optionHide: true,
+            description: prizeTitle['1등'],
+            style: { backgroundColor: '#B2DAFC', textColor: 'black' },
+            weight: 10 / 210,
+            limit:
+              10 - receivedPrizeCount['1등'] > 0
+                ? 10 - receivedPrizeCount['1등']
+                : 0,
+          },
+          {
+            option: '2등',
+            optionHide: true,
+            description: prizeTitle['2등'],
+            style: { backgroundColor: '#dbeeff', textColor: 'black' },
+            weight: 113 / 210,
+            limit:
+              113 - receivedPrizeCount['2등'] > 0
+                ? 113 - receivedPrizeCount['2등']
+                : 0,
+          },
+          {
+            option: '4등',
+            optionHide: true,
+            description: prizeTitle['4등'],
+            style: { backgroundColor: '#89B7E8', textColor: 'black' },
+            weight: 87 / 210,
+            limit:
+              87 - receivedPrizeCount['4등'] > 0
+                ? 87 - receivedPrizeCount['4등']
+                : 0,
+          },
+        ]
+      : [
+          {
+            option: '1등',
+            optionHide: true,
+            description: prizeTitle['1등'],
+            style: { backgroundColor: '#B2DAFC', textColor: 'black' },
+            weight: 10 / 310,
+            limit:
+              10 - receivedPrizeCount['1등'] > 0
+                ? 10 - receivedPrizeCount['1등']
+                : 0,
+          },
+          {
+            option: '3등',
+            optionHide: true,
+            description: prizeTitle['3등'],
+            style: { backgroundColor: '#89B7E8', textColor: 'black' },
+            weight: 106 / 310,
+            limit:
+              106 - receivedPrizeCount['3등'] > 0
+                ? 106 - receivedPrizeCount['3등']
+                : 0,
+          },
+          {
+            option: '2등',
+            optionHide: true,
+            description: prizeTitle['2등'],
+            style: { backgroundColor: '#B2DAFC', textColor: 'black' },
+            weight: 106 / 310,
+            limit:
+              106 - receivedPrizeCount['2등'] > 0
+                ? 106 - receivedPrizeCount['2등']
+                : 0,
+          },
+          {
+            option: '4등',
+            optionHide: true,
+            description: prizeTitle['4등'],
+            style: { backgroundColor: '#89B7E8', textColor: 'black' },
+            weight: 87 / 310,
+            limit:
+              87 - receivedPrizeCount['4등'] > 0
+                ? 87 - receivedPrizeCount['4등']
+                : 0,
+          },
+        ]
+  );
 
   const isAvail =
     prizes.reduce((acc, prize) => {
@@ -159,6 +204,13 @@ const Step2Container = ({ user, receivedPrizeCount }: Props) => {
               prizes={prizes}
               requiredStep={requiredStep}
               onFinished={onFinished}
+              preRender={() => {
+                return IS_YONSEI ? (
+                  <BoardYonsei className="p-[3px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none" />
+                ) : (
+                  <Board className="p-[6px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none" />
+                );
+              }}
             />
           </div>
           <Dialog open={popupOpen} onOpenChange={setPopupOpen}>

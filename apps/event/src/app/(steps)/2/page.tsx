@@ -48,7 +48,11 @@ const Page = async ({ searchParams }: PageProps) => {
   return (
     <Suspense>
       {user && (
-        <Step2Container user={user} receivedPrizeCount={receivedPrizeCount} />
+        <Step2Container
+          university={u}
+          user={user}
+          receivedPrizeCount={receivedPrizeCount}
+        />
       )}
     </Suspense>
   );

@@ -3,7 +3,6 @@ import React from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Wheel } from '../../_components/Roulette/RouletteWheel/index';
 import { ImagePropsLocal } from '@/app/_components/Roulette/RouletteWheel/types';
-import Board from '@/app/_components/svg/Board';
 
 export interface RouletteData {
   option: string;
@@ -19,11 +18,15 @@ interface RouletteWheelProps {
   prizes: RouletteData[];
   requiredStep: (prize: string, prizeIndex: number) => Promise<boolean>;
   onFinished: (prize: string) => void;
+  preRender?: () => React.ReactNode;
 }
 const RouletteWheel: React.FC<RouletteWheelProps> = ({
   prizes,
   onFinished,
   requiredStep,
+  preRender = () => {
+    return <></>;
+  },
 }) => {
   const [data, setData] = React.useState<RouletteData[]>(prizes);
   const [isCanvasReady, setIsCanvasReady] = React.useState(false);
@@ -92,18 +95,7 @@ const RouletteWheel: React.FC<RouletteWheelProps> = ({
   return (
     <div className="roulette_container">
       <div className="relative roulette_board rounded-full p-3 bg-white border-[#82898F] border-8">
-        {!isCanvasReady && (
-          // <img
-          //   src="/board.png" // placeholder 이미지 경로
-          //   alt="Roulette Placeholder"
-          //   className="p-[3px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none"
-          //   style={{
-          //     transition: 'opacity 0.3s ease-in-out',
-          //     opacity: isCanvasReady ? 0 : 1,
-          //   }}
-          // />
-          <Board className="p-[6px]  w-[80vw] max-w-[445px] h-[80vw] max-h-[445px] object-contain flex-shrink-0 z-[5] pointer-events-none" />
-        )}
+        {!isCanvasReady && preRender()}
         <div
           style={{
             opacity: isCanvasReady ? 1 : 0,

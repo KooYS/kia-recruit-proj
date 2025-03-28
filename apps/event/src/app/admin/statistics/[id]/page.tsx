@@ -11,16 +11,17 @@ interface PrizeType {
   fourth_prize: number;
 }
 
-const Page = async () => {
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
   const { body: data } = await Fetch<_Response<PrizeType[]>>(
-    '/api/admin/statistics',
+    `/api/admin/statistics?u=${decodeURI(id)}`,
     {
       method: 'GET',
     }
   );
   return (
     <div className="h-full w-full">
-      <div className=" p-5 min-w-[200px] grid grid-cols-2 md:grid-cols-3 gap-2 overflow-scroll h-full content-start">
+      <div className=" p-5 min-w-[200px] grid grid-cols-1 gap-2 overflow-scroll h-full content-start">
         {data?.map((item) => {
           const IS_YONSEI = item.university === '연세대학교';
           const IS_DONE =
@@ -28,7 +29,7 @@ const Page = async () => {
               +item.second_prize +
               +item.third_prize +
               +item.fourth_prize ===
-            (IS_YONSEI ? 3 : 310);
+            (IS_YONSEI ? 210 : 310);
           return (
             <div
               key={item.university}
