@@ -41,10 +41,10 @@ const Step2Container = ({ university, user, receivedPrizeCount }: Props) => {
             optionHide: true,
             description: prizeTitle['1등'],
             style: { backgroundColor: '#B2DAFC', textColor: 'black' },
-            weight: 10 / 210,
+            weight: 15 / 292,
             limit:
-              10 - receivedPrizeCount['1등'] > 0
-                ? 10 - receivedPrizeCount['1등']
+              15 - receivedPrizeCount['1등'] > 0
+                ? 15 - receivedPrizeCount['1등']
                 : 0,
           },
           {
@@ -52,10 +52,10 @@ const Step2Container = ({ university, user, receivedPrizeCount }: Props) => {
             optionHide: true,
             description: prizeTitle['2등'],
             style: { backgroundColor: '#dbeeff', textColor: 'black' },
-            weight: 113 / 210,
+            weight: 120 / 292,
             limit:
-              113 - receivedPrizeCount['2등'] > 0
-                ? 113 - receivedPrizeCount['2등']
+              120 - receivedPrizeCount['2등'] > 0
+                ? 120 - receivedPrizeCount['2등']
                 : 0,
           },
           {
@@ -63,10 +63,10 @@ const Step2Container = ({ university, user, receivedPrizeCount }: Props) => {
             optionHide: true,
             description: prizeTitle['4등'],
             style: { backgroundColor: '#89B7E8', textColor: 'black' },
-            weight: 87 / 210,
+            weight: 157 / 292,
             limit:
-              87 - receivedPrizeCount['4등'] > 0
-                ? 87 - receivedPrizeCount['4등']
+              157 - receivedPrizeCount['4등'] > 0
+                ? 157 - receivedPrizeCount['4등']
                 : 0,
           },
         ]
@@ -76,7 +76,7 @@ const Step2Container = ({ university, user, receivedPrizeCount }: Props) => {
             optionHide: true,
             description: prizeTitle['1등'],
             style: { backgroundColor: '#B2DAFC', textColor: 'black' },
-            weight: 10 / 310,
+            weight: 10 / 299,
             limit:
               10 - receivedPrizeCount['1등'] > 0
                 ? 10 - receivedPrizeCount['1등']
@@ -87,7 +87,7 @@ const Step2Container = ({ university, user, receivedPrizeCount }: Props) => {
             optionHide: true,
             description: prizeTitle['3등'],
             style: { backgroundColor: '#89B7E8', textColor: 'black' },
-            weight: 106 / 310,
+            weight: 106 / 299,
             limit:
               106 - receivedPrizeCount['3등'] > 0
                 ? 106 - receivedPrizeCount['3등']
@@ -98,7 +98,7 @@ const Step2Container = ({ university, user, receivedPrizeCount }: Props) => {
             optionHide: true,
             description: prizeTitle['2등'],
             style: { backgroundColor: '#B2DAFC', textColor: 'black' },
-            weight: 106 / 310,
+            weight: 106 / 299,
             limit:
               106 - receivedPrizeCount['2등'] > 0
                 ? 106 - receivedPrizeCount['2등']
@@ -109,10 +109,10 @@ const Step2Container = ({ university, user, receivedPrizeCount }: Props) => {
             optionHide: true,
             description: prizeTitle['4등'],
             style: { backgroundColor: '#89B7E8', textColor: 'black' },
-            weight: 87 / 310,
+            weight: 77 / 299,
             limit:
-              87 - receivedPrizeCount['4등'] > 0
-                ? 87 - receivedPrizeCount['4등']
+              77 - receivedPrizeCount['4등'] > 0
+                ? 77 - receivedPrizeCount['4등']
                 : 0,
           },
         ]
