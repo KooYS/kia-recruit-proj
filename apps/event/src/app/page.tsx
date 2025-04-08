@@ -6,6 +6,7 @@ const university = {
 const loadSearchParams = createLoader(university);
 import type { SearchParams } from 'nuqs/server';
 import StepBoard from './_components/StepBoard';
+import { redirect } from 'next/navigation';
 
 type PageProps = {
   searchParams: Promise<SearchParams>;
@@ -23,11 +24,11 @@ export default async function Page({ searchParams }: PageProps) {
       </div>
     );
   } else {
-    return (
-      <div>
-        <StepBoard university={u} />
-      </div>
-    );
+    redirect(`1${`?u=${encodeURI(u || '')}`}`);
+    // return (
+    //   <div>
+    //     <StepBoard university={u} />
+    //   </div>
+    // );
   }
-  // redirect(`1${`?u=${encodeURI(u || '')}`}`);
 }
