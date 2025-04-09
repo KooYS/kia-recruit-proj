@@ -28,7 +28,7 @@ const Page = async () => {
               +item.second_prize +
               +item.third_prize +
               +item.fourth_prize ===
-            (IS_YONSEI ? 3 : 310);
+            (IS_YONSEI ? 292 : 299);
           return (
             <div
               key={item.university}
@@ -42,7 +42,7 @@ const Page = async () => {
                     +item.second_prize +
                     +item.third_prize +
                     +item.fourth_prize}
-                  &nbsp; / {IS_YONSEI ? '210' : '310'} )
+                  &nbsp; / {IS_YONSEI ? '292' : '299'} )
                 </span>
               </div>
 
